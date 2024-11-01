@@ -2,21 +2,34 @@ import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import * as joint from 'jointjs';
 import { isPlatformBrowser } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { InputModalComponent } from '../input-modal/input-modal.component';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+
+const shapeNamespace = { ...joint.shapes };
 
 @Component({
   selector: 'app-uml-diagram',
-  standalone: true,
   templateUrl: './uml-diagram.component.html',
   styleUrls: ['./uml-diagram.component.scss'],
-  imports: [FormsModule]
+  // imports: [FormsModule, MatDialogModule ]
 })
 export class UmlDiagramComponent implements OnInit {
-  private graph: joint.dia.Graph = new joint.dia.Graph();
+  private graph = new joint.dia.Graph({}, { cellNamespace: joint.shapes });
   private paper!: joint.dia.Paper;
+  selectedClass: joint.dia.Element | null = null;
+
   className: string = '';
   lastAddedClass: joint.shapes.uml.Class | null = null;
 
-  constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
+  constructor(@Inject(PLATFORM_ID) private platformId: Object, private dialog: MatDialog) {}
+
+  openAddClassDialog() {
+    const dialogRef = this.dialog.open(InputModalComponent);
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('User entered:', result);
+    });
+  }
 
   ngOnInit(): void {
     console.log('UML Diagram component initialized.');
@@ -24,10 +37,22 @@ export class UmlDiagramComponent implements OnInit {
       this.paper = new joint.dia.Paper({
         el: document.getElementById('paper'),
         model: this.graph,
-        width: 800,
-        height: 600,
-        gridSize: 10
+        width: window.innerWidth - 35,
+        height: window.innerHeight - 160,
+        background: {
+            color: '#F8F9FA',
+        },
+        async: true,
+        sorting: joint.dia.Paper.sorting.APPROX,
+        cellViewNamespace: joint.shapes
       });
+
+      // Event listener to select a class
+      // this.paper.on('cell:pointerclick', (cellView) => {
+      //   const elementView = cellView as joint.dia.ElementView;
+      //   this.selectedClass = elementView. as joint.dia.Element;
+      //   console.log(`Selected class: ${this.selectedClass.get('name')}`);
+      // });
     }
   }
 
@@ -37,12 +62,12 @@ export class UmlDiagramComponent implements OnInit {
       return;
     }
 
-    const x = Math.random() * 700; // Random x position
-    const y = Math.random() * 500; // Random y position
+    const x = Math.random() * (window.innerWidth - 135);
+    const y = Math.random() * (window.innerHeight - 260);
 
     const umlClass = new joint.shapes.uml.Class({
       position: { x, y },
-      size: { width: 100, height: 40 },
+      size: { width: 200, height: 200 },
       name: [this.className],
       attributes: ['+ id: number', '+ name: string'],
       methods: ['+ getName(): string', '+ setName(name: string): void']
@@ -50,17 +75,17 @@ export class UmlDiagramComponent implements OnInit {
     
     this.graph.addCell(umlClass);
     this.className = ''; // Clear input field
-    this.lastAddedClass = umlClass; // Keep reference to the last added class
+    this.lastAddedClass = umlClass;
   }
 
   connectClasses() {
-    if (!this.lastAddedClass) {
-      alert('Please add a class first to connect.');
+    if (!this.selectedClass || !this.lastAddedClass) {
+      alert('Please select a class and add another class to connect.');
       return;
     }
 
-    const source = this.lastAddedClass; // Connect to the last added class
-    const target = this.graph.getCells().find(c => c !== source); // Connect to any other class
+    const source = this.selectedClass;
+    const target = this.graph.getCells().find(c => c !== source);
 
     if (target) {
       const link = new joint.shapes.standard.Link();
