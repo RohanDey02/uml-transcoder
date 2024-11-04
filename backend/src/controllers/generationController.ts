@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 
-export const generateAIResponse = (async (req: Request, res: Response) => {
+export const generateAIResponse = (async (req: Request, res: Response): Promise<void> => {
   const { prompt, content } = req.body;
 
   try {
