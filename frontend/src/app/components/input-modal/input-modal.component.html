@@ -1,8 +1,53 @@
 <h2 mat-dialog-title>Enter Data</h2>
 <mat-dialog-content>
-  <mat-form-field>
-    <input matInput placeholder="Enter your data" [(ngModel)]="inputData" />
-  </mat-form-field>
+  <form [formGroup]="umlForm">
+    <mat-form-field appearance="fill">
+      <mat-label>Class Name</mat-label>
+      <input
+        matInput
+        formControlName="className"
+        placeholder="Enter class name"
+      />
+    </mat-form-field>
+
+    <div formArrayName="attributes">
+      <div *ngFor="let attribute of attributes.controls; let i = index" [formGroupName]="i">
+        <mat-form-field appearance="fill">
+          <mat-label>Level {{ i + 1 }}</mat-label>
+          <mat-select formControlName="level">
+            <mat-option *ngFor="let level of umlLevels" [value]="level">{{level}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Attribute {{ i + 1 }}</mat-label>
+          <input matInput formControlName="name" placeholder="Enter attribute" />
+        </mat-form-field>
+        <button mat-icon-button type="button" (click)="removeAttribute(i)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+      <button mat-button type="button" (click)="addAttribute()">Add Attribute</button>
+    </div>
+
+    <div formArrayName="methods">
+      <div *ngFor="let method of methods.controls; let i = index" [formGroupName]="i">
+        <mat-form-field appearance="fill">
+          <mat-label>Level {{ i + 1 }}</mat-label>
+          <mat-select formControlName="level">
+            <mat-option *ngFor="let level of umlLevels" [value]="level">{{level}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Method {{ i + 1 }}</mat-label>
+          <input matInput formControlName="name" placeholder="Enter method" />
+        </mat-form-field>
+        <button mat-icon-button type="button" (click)="removeMethod(i)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+      <button mat-button type="button" (click)="addMethod()">Add Method</button>
+    </div>
+  </form>
 </mat-dialog-content>
 <mat-dialog-actions>
   <button mat-button (click)="onCancel()">Cancel</button>

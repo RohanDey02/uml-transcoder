@@ -1,7 +1,6 @@
 import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import * as joint from 'jointjs';
 import { isPlatformBrowser } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { InputModalComponent } from '../input-modal/input-modal.component';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 
@@ -11,7 +10,6 @@ const shapeNamespace = { ...joint.shapes };
   selector: 'app-uml-diagram',
   templateUrl: './uml-diagram.component.html',
   styleUrls: ['./uml-diagram.component.scss'],
-  // imports: [FormsModule, MatDialogModule ]
 })
 export class UmlDiagramComponent implements OnInit {
   private graph = new joint.dia.Graph({}, { cellNamespace: joint.shapes });
