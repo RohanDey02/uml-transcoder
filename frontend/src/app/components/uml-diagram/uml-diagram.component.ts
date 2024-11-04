@@ -129,4 +129,25 @@ export class UmlDiagramComponent implements OnInit {
   clearGraph() {
     this.graph.clear();
   }
+
+  exportToImage() {
+    const svgString = new XMLSerializer().serializeToString(this.paper.svg);
+
+    const canvas = document.createElement('canvas');
+    const context = canvas.getContext('2d');
+    const image = new Image(window.innerWidth - 50, window.innerHeight - 140);
+
+    image.onload = () => {
+      canvas.width = image.width;
+      canvas.height = image.height;
+      context?.drawImage(image, 0, 0);
+
+      const a = document.createElement('a');
+      a.href = canvas.toDataURL('image/png');
+      a.download = 'uml-diagram.png';
+      a.click();
+    };
+
+    image.src = 'data:image/svg+xml;base64,' + btoa(decodeURIComponent(encodeURIComponent(svgString)));
+  }
 }

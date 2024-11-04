@@ -2,5 +2,6 @@
   <button mat-button (click)="openAddClassDialog()">Add Class</button>
   <button mat-button [disabled]="getGraph().getCells().length < 2" (click)="connectClasses()">Connect Classes</button>
   <button mat-button (click)="clearGraph()">Clear Graph</button>
+  <button mat-button (click)="exportToImage()">Export As Image</button>
 </div>
 <div id="paper"></div>
