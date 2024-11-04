@@ -62,8 +62,6 @@ export class InputModalComponent implements OnInit {
   }
 
   onSubmit(): void {
-    console.log(this.umlForm.get('methods'));
-    console.log('Form submitted:', this.umlForm.value);
     if (this.umlForm.valid) {
       this.dialogRef.close(this.umlForm.value);
     }

@@ -17,6 +17,8 @@ export class UmlDiagramComponent implements OnInit {
   selectedClass: joint.dia.Element | null = null;
 
   className: string = '';
+  attributes: string[] = [];
+  methods: string[] = [];
   lastAddedClass: joint.shapes.uml.Class | null = null;
 
   constructor(@Inject(PLATFORM_ID) private platformId: Object, private dialog: MatDialog) {}
@@ -25,7 +27,11 @@ export class UmlDiagramComponent implements OnInit {
     const dialogRef = this.dialog.open(InputModalComponent);
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('User entered:', result);
+      const { className, attributes, methods } = result;
+      this.className = className;
+      this.attributes = attributes.map((a: any) => `${a.level} ${a.name}`);
+      this.methods = methods.map((m: any) => `${m.level} ${m.name}`);
+      this.addClass();
     });
   }
 
@@ -67,12 +73,14 @@ export class UmlDiagramComponent implements OnInit {
       position: { x, y },
       size: { width: 200, height: 200 },
       name: [this.className],
-      attributes: ['+ id: number', '+ name: string'],
-      methods: ['+ getName(): string', '+ setName(name: string): void']
+      attributes: this.attributes,
+      methods: this.methods
     });
     
     this.graph.addCell(umlClass);
     this.className = ''; // Clear input field
+    this.attributes = [];
+    this.methods = [];
     this.lastAddedClass = umlClass;
   }
 
