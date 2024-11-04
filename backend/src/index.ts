@@ -3,6 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import express, { Express } from "express";
 import generationRouter from "./routers/generationRouter";
+import webProxyRouter from "./routers/webProxyRouter";
 
 dotenv.config({ path: ".env" });
 
@@ -19,8 +20,9 @@ const port = process.env.PORT ?? 8080;
 
 app.get("/", (_req, res) => {
   res.send("Welcome to the UML <=> SQL DDL Converter API!");
-});
+}); 
 
+app.use("/api/v1/import", webProxyRouter);
 app.use("/api/v1/generate", generationRouter);
 
 app.listen(port, () => {
