@@ -9,6 +9,9 @@ export const requestWebContent = (async (req: Request, res: Response): Promise<v
     return;
   }
 
+  /*
+   * NOTE: I am aware that it is a lot easier to just use fetch(), but I wanted to try out a different approach 🙂
+   */
   try {
     // Parse the URL and extract hostname and path
     const { hostname, pathname } = new URL(targetUrl as string);
@@ -36,15 +39,15 @@ export const requestWebContent = (async (req: Request, res: Response): Promise<v
       // Handle the end of the response
       response.on('end', () => {
         const contentType = response.headers['content-type'];
-        
-        if (contentType && contentType.startsWith('image/')) {
+
+        if (contentType?.startsWith('image/')) {
           res.setHeader('Content-Type', contentType);
           const buffer = Buffer.concat(responseData);
           res.status(200).end(buffer);
         } else {
-            const buffer = Buffer.concat(responseData);
-            res.setHeader('Content-Type', contentType || 'application/octet-stream');
-            res.status(200).end(buffer);
+          const buffer = Buffer.concat(responseData);
+          res.setHeader('Content-Type', contentType ?? 'application/octet-stream');
+          res.status(200).end(buffer);
         }
       });
     });
