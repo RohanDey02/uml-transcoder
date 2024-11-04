@@ -1,16 +1,39 @@
-// #paper {
-//   width: 100%;
-//   height: 100%;
-//   // background-color: #f9f9f9;
-//   border: 1px solid #ddd;
-//   border-radius: 8px;
-//   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-//   overflow: hidden;
-//   position: relative;
-//   transition: all 0.3s ease;
+.uml-view {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
 
-//   &:hover {
-//     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-//     background-color: #ffffff;
-//   }
-// }
+.uml-view button {
+  background-color: #007bff;
+  color: #fff;
+  border-radius: 6px;
+  padding: 10px 20px;
+  transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-image: linear-gradient(to right, #007bff, #0056b3);
+  cursor: pointer;
+
+  &:disabled {
+    background-color: #cccccc;
+    color: #666666;
+    cursor: not-allowed;
+    box-shadow: none;
+    background-image: none;
+  }
+}
+
+#paper {
+  border: 2px solid #007bff;
+  background-color: #f4f4f4;
+  background-size: 15px 15px;
+  background-image: linear-gradient(to right, #e0e0e0 1px, transparent 1px),
+                    linear-gradient(to bottom, #e0e0e0 1px, transparent 1px);
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 -4px 8px rgba(0, 0, 0, 0.1), 4px 0 8px rgba(0, 0, 0, 0.1), -4px 0 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  position: relative;
+  transition: all 0.3s ease;
+  margin: 1rem;
+}

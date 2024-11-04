@@ -4,8 +4,6 @@ import { isPlatformBrowser } from '@angular/common';
 import { InputModalComponent } from '../input-modal/input-modal.component';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 
-const shapeNamespace = { ...joint.shapes };
-
 @Component({
   selector: 'app-uml-diagram',
   templateUrl: './uml-diagram.component.html',
@@ -21,7 +19,11 @@ export class UmlDiagramComponent implements OnInit {
   methods: string[] = [];
   lastAddedClass: joint.shapes.uml.Class | null = null;
 
-  constructor(@Inject(PLATFORM_ID) private platformId: Object, private dialog: MatDialog) {}
+  constructor(@Inject(PLATFORM_ID) private platformId: Object, private dialog: MatDialog) { }
+
+  getGraph() {
+    return this.graph;
+  }
 
   openAddClassDialog() {
     const dialogRef = this.dialog.open(InputModalComponent);
@@ -36,19 +38,13 @@ export class UmlDiagramComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log('UML Diagram component initialized.');
     if (isPlatformBrowser(this.platformId)) {
       this.paper = new joint.dia.Paper({
         el: document.getElementById('paper'),
         model: this.graph,
-        width: window.innerWidth - 35,
-        height: window.innerHeight - 160,
-        background: {
-            color: '#F8F9FA',
-        },
-        async: true,
-        sorting: joint.dia.Paper.sorting.APPROX,
-        cellViewNamespace: joint.shapes
+        width: window.innerWidth - 50,
+        height: window.innerHeight - 140,
+        async: true
       });
 
       // Event listener to select a class
@@ -61,24 +57,51 @@ export class UmlDiagramComponent implements OnInit {
   }
 
   addClass() {
-    if (!this.className) {
-      alert('Please enter a class name.');
-      return;
-    }
+    const x = Math.random() * (window.innerWidth - 150);
+    const y = Math.random() * (window.innerHeight - 240);
 
-    const x = Math.random() * (window.innerWidth - 135);
-    const y = Math.random() * (window.innerHeight - 260);
+    const umlDesignAttrs: any = (col1: string, col2: string, gradient: boolean = false) => {
+      if (gradient) {
+        return {
+          fill: {
+            type: 'linearGradient',
+            stops: [
+              { offset: '0%', color: col1 },
+              { offset: '100%', color: col2 }
+            ]
+          },
+          stroke: col2,
+          'stroke-width': 1
+        }
+      } else {
+        return {
+          fill: col1,
+          stroke: col2,
+          'stroke-width': 1
+        }
+      }
+    };
 
     const umlClass = new joint.shapes.uml.Class({
       position: { x, y },
-      size: { width: 200, height: 200 },
+      size: { width: 200, height: 150 },
       name: [this.className],
       attributes: this.attributes,
-      methods: this.methods
+      methods: this.methods,
+      attrs: {
+        '.uml-class-name-rect': umlDesignAttrs('#007bff', '#0056b3', true),
+        '.uml-class-attrs-rect': umlDesignAttrs('#ECF0F1', '#BDC3C7'),
+        '.uml-class-methods-rect': umlDesignAttrs('#ECF0F1', '#BDC3C7'),
+        '.uml-class-name-text': { 'font-family': 'Roboto, Helvetica Neue, sans-serif', 'font-size': 14, 'font-weight': 'bold', fill: '#f4f4f4' },
+        '.uml-class-attrs-text': { 'font-family': 'Roboto, Helvetica Neue, sans-serif', 'font-size': 12, fill: '#2C3E50' },
+        '.uml-class-methods-text': { 'font-family': 'Roboto, Helvetica Neue, sans-serif', 'font-size': 12, fill: '#2C3E50' }
+      }
     });
-    
+
     this.graph.addCell(umlClass);
-    this.className = ''; // Clear input field
+
+    // Clear input fields
+    this.className = '';
     this.attributes = [];
     this.methods = [];
     this.lastAddedClass = umlClass;
@@ -101,5 +124,9 @@ export class UmlDiagramComponent implements OnInit {
     } else {
       alert('No other classes to connect to.');
     }
+  }
+
+  clearGraph() {
+    this.graph.clear();
   }
 }

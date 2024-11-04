@@ -1,8 +1,6 @@
-<div>
-  <h2>Create UML Diagram</h2>
-  <input [(ngModel)]="className" placeholder="Class Name" />
-  <button (click)="addClass()">Add Class</button>
-  <button mat-button (click)="openAddClassDialog()">Add Class Dialog</button>
-  <button (click)="connectClasses()">Connect Classes</button>
+<div class="uml-view">
+  <button mat-button (click)="openAddClassDialog()">Add Class</button>
+  <button mat-button [disabled]="getGraph().getCells().length < 2" (click)="connectClasses()">Connect Classes</button>
+  <button mat-button (click)="clearGraph()">Clear Graph</button>
 </div>
-<div id="paper" style="border: 1px solid black; width: 800px; height: 600px;"></div>
+<div id="paper"></div>
