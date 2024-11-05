@@ -3,3 +3,6 @@
 1. Web proxy to existing SQL DDL and then port to Generation Router
 2. Web proxy to existing UML and then port to Generation Router
 3. Export custom RohanUML file and allow for import on FE
+
+## Change of Scope
+Instead of just SQL DDL, let's convert to any language and allow the other way around too.
