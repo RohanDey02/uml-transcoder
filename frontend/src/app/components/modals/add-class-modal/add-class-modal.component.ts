@@ -7,13 +7,13 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
   templateUrl: './add-class-modal.component.html',
   styleUrls: ['./add-class-modal.component.scss']
 })
-export class InputModalComponent implements OnInit {
+export class AddClassModalComponent implements OnInit {
   umlForm: FormGroup;
   umlLevels = ['+', '-', '#', '~'];
 
   constructor(
     private fb: FormBuilder,
-    public dialogRef: MatDialogRef<InputModalComponent>,
+    public dialogRef: MatDialogRef<AddClassModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.umlForm = this.fb.group({

@@ -13,14 +13,14 @@ import { UmlDiagramComponent } from './components/uml-diagram/uml-diagram.compon
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ApiInterceptor } from './api.interceptor';
 import { AppRoutingModule } from './app-routing.module';
-import { InputModalComponent } from './components/modals/add-class-modal/add-class-modal.component';
+import { AddClassModalComponent } from './components/modals/add-class-modal/add-class-modal.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
     AppComponent,
     UmlDiagramComponent,
-    InputModalComponent
+    AddClassModalComponent
   ],
   imports: [
     AppRoutingModule,
