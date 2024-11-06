@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import * as joint from 'jointjs';
 import { isPlatformBrowser } from '@angular/common';
-import { InputModalComponent } from '../input-modal/input-modal.component';
+import { InputModalComponent } from '../modals/add-class-modal/add-class-modal.component';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 
 @Component({
@@ -26,6 +26,30 @@ export class UmlDiagramComponent implements OnInit {
   }
 
   openAddClassDialog() {
+    const dialogRef = this.dialog.open(InputModalComponent);
+
+    dialogRef.afterClosed().subscribe(result => {
+      const { className, attributes, methods } = result;
+      this.className = className;
+      this.attributes = attributes.map((a: any) => `${a.level} ${a.name}`);
+      this.methods = methods.map((m: any) => `${m.level} ${m.name}`);
+      this.addClass();
+    });
+  }
+
+  openImportDialog() {
+    const dialogRef = this.dialog.open(InputModalComponent);
+
+    dialogRef.afterClosed().subscribe(result => {
+      const { className, attributes, methods } = result;
+      this.className = className;
+      this.attributes = attributes.map((a: any) => `${a.level} ${a.name}`);
+      this.methods = methods.map((m: any) => `${m.level} ${m.name}`);
+      this.addClass();
+    });
+  }
+
+  openExportDialog() {
     const dialogRef = this.dialog.open(InputModalComponent);
 
     dialogRef.afterClosed().subscribe(result => {
