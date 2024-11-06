@@ -1,0 +1,25 @@
+<div class="uml-class-modal">
+  <h2 mat-dialog-title>Export To Image / Code / RohanUML</h2>
+  <mat-dialog-content>
+    <div class="import-options">
+      <mat-radio-group [(ngModel)]="exportOption">
+        <mat-radio-button value="exp-image" (change)="onOptionChange()">Export as Image</mat-radio-button>
+        <mat-radio-button value="exp-code" (change)="onOptionChange()">Export as Code</mat-radio-button>
+        <mat-radio-button value="exp-rohanuml" (change)="onOptionChange()">Export as RohanUML</mat-radio-button>
+      </mat-radio-group>
+
+      <div *ngIf="exportOption === 'exp-code'" class="uml-buttons">
+        <mat-form-field appearance="fill">
+          <mat-label>Programming Language</mat-label>
+          <mat-select [(value)]="selectedLanguage">
+            <mat-option *ngFor="let language of programmingLanguages" [value]="language">{{language}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-button (click)="onCancel()" [disabled]="exportOption === '' || (exportOption === 'exp-code' && selectedLanguage === '')">Cancel</button>
+    <button mat-button (click)="onSubmit()" [disabled]="exportOption === '' || (exportOption === 'exp-code' && selectedLanguage === '')">Submit</button>
+  </mat-dialog-actions>
+</div>
