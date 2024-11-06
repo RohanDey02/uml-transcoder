@@ -2,6 +2,7 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import dotenv from "dotenv";
 import express, { Express } from "express";
+import rateLimit from "express-rate-limit";
 import generationRouter from "./routers/generationRouter";
 import webProxyRouter from "./routers/webProxyRouter";
 import uploadsRouter from "./routers/uploadsRouter";
@@ -16,6 +17,10 @@ app.use(
     credentials: true,
   })
 );
+app.use(rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100
+}))
 
 const port = process.env.PORT ?? 8080;
 
