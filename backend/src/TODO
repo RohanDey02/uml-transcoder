@@ -17,3 +17,6 @@ Upload file on FE -> Save to uploads/ -> Generate URL with path to uploadsContro
 
 #### Another way: If No File
 Text textbox of data and attach to prompt -> Use for AI generation w/ no file
+
+## FE Features
+Button to download RohanUML and upload RohanUML to auto-populate the paper
