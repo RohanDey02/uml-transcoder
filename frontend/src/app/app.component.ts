@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-// import { UmlDiagramComponent } from './components/uml-diagram/uml-diagram.component';
 
 @Component({
   selector: 'app-root',
@@ -7,5 +6,5 @@ import { Component } from '@angular/core';
   styleUrls: [ './app.component.scss' ]
 })
 export class AppComponent {
-  title: string = 'UML Diagram to SQL DDL';
+  title: string = 'UML Transcoder';
 }

@@ -16,9 +16,9 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'UML Diagram to SQL DDL'`, () => {
+  it(`should have as title 'UML Transcoder'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('UML Diagram to SQL DDL');
+    expect(app.title).toEqual('UML Transcoder');
   });
 });
