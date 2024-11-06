@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import express, { Express } from "express";
 import generationRouter from "./routers/generationRouter";
 import webProxyRouter from "./routers/webProxyRouter";
+import uploadsRouter from "./routers/uploadsRouter";
 
 dotenv.config({ path: ".env" });
 
@@ -24,6 +25,7 @@ app.get("/", (_req, res) => {
 
 app.use("/api/v1/import", webProxyRouter);
 app.use("/api/v1/generate", generationRouter);
+app.use("/api/v1/upload", uploadsRouter);
 
 app.listen(port, () => {
   console.log(`[server]: Server is running at http://localhost:${port}`);
