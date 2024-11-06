@@ -8,4 +8,12 @@
 Instead of just SQL DDL, let's convert to any language and allow the other way around too.
 
 ## Flow
+
+### UML Image -> Any language
 Upload image on FE -> Save to uploads/ -> Generate URL with path to uploadsController -> Use URL for AI generation
+
+### Any language -> UML
+Upload file on FE -> Save to uploads/ -> Generate URL with path to uploadsController -> Extract text from file and attach to the prompt -> Use for AI generation
+
+#### Another way: If No File
+Text textbox of data and attach to prompt -> Use for AI generation w/ no file
