@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { HfInference } from "@huggingface/inference";
 
 export const generateAIResponse = (async (req: Request, res: Response): Promise<void> => {
-  const { prompt, imageModel, imageUrl } = req.body;
+  const { prompt, imageModel, artifactSrc } = req.body;
 
   const openAIKey = req.headers['authorization'];
   if (!openAIKey) {
@@ -22,7 +22,7 @@ export const generateAIResponse = (async (req: Request, res: Response): Promise<
         {
           type: "image_url",
           image_url: {
-            url: imageUrl
+            url: artifactSrc
           }
         }
       ]
