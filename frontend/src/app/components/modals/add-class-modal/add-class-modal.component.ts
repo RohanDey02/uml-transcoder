@@ -3,9 +3,9 @@ import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
-  selector: 'app-input-modal',
-  templateUrl: './input-modal.component.html',
-  styleUrls: ['./input-modal.component.scss']
+  selector: 'add-class-modal',
+  templateUrl: './add-class-modal.component.html',
+  styleUrls: ['./add-class-modal.component.scss']
 })
 export class InputModalComponent implements OnInit {
   umlForm: FormGroup;
