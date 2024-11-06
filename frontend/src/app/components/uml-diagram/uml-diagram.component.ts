@@ -2,9 +2,10 @@ import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import * as joint from 'jointjs';
 import { isPlatformBrowser } from '@angular/common';
 import { AddClassModalComponent } from '../modals/add-class-modal/add-class-modal.component';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { ImportClassModalComponent } from '../modals/import-modal/import-modal.component';
 import { ExportClassModalComponent } from '../modals/export-modal/export-modal.component';
+import * as fflate from 'fflate';
 
 @Component({
   selector: 'app-uml-diagram',
@@ -44,15 +45,10 @@ export class UmlDiagramComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       const { importOption, uploadedFile, selectedLanguage } = result;
-      
+
       if (importOption === 'imp-rohanuml') {
         uploadedFile.text().then((text: string) => {
-          // console.log(text);
-          // const { className, attributes, methods } = JSON.parse(text);
-          // this.className = className;
-          // this.attributes = attributes.map((a: any) => `${a.level} ${a.name}`);
-          // this.methods = methods.map((m: any) => `${m.level} ${m.name}`);
-          // this.addClass();
+          this.importFromRohanUML(text);
         });
       } else if (importOption === 'imp-uml') {
         alert('Importing from UML is not yet supported.');
@@ -69,13 +65,14 @@ export class UmlDiagramComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       const { exportOption, selectedLanguage } = result;
-      
+
       if (exportOption === 'exp-code') {
         alert('Exporting to code is not yet supported.');
       } else if (exportOption == 'exp-image') {
         this.exportToImage();
       } else {
-        alert('Exporting to RohanUML is not yet supported.');
+        // alert('Exporting to RohanUML is not yet supported.');
+        this.exportToRohanUML();
       }
     });
   }
@@ -185,5 +182,42 @@ export class UmlDiagramComponent implements OnInit {
     };
 
     image.src = 'data:image/svg+xml;base64,' + btoa(decodeURIComponent(encodeURIComponent(svgString)));
+  }
+
+  exportToRohanUML() {
+    const graphData = this.graph.toJSON().cells.map((cell: joint.shapes.uml.ClassAttributes) => {
+      return {
+        name: cell.name[0],
+        attributes: cell.attributes,
+        methods: cell.methods
+      };
+    });
+
+    const compressed = fflate.gzipSync(fflate.strToU8(JSON.stringify(graphData, null, 2)), { level: 9 });
+    // Create a hidden anchor element
+    const link = document.createElement('a');
+
+    // Set file content as a data URL
+    link.href = 'data:text/plain;charset=utf-8,' + encodeURIComponent(fflate.strFromU8(compressed, true));
+    
+    // Set the download attribute with the desired file name
+    link.download = 'uml-diagram.rohanuml';
+
+    // Append the link to the document, trigger click, and remove it
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+
+  importFromRohanUML(text: string) {
+    const decompressed = fflate.gunzipSync(fflate.strToU8(text, true));
+    const graphData = JSON.parse(new TextDecoder().decode(decompressed));
+
+    for (const cell of Array.from(graphData) as { name: string; attributes: string[]; methods: string[] }[]) {
+      this.className = cell.name;
+      this.attributes = cell.attributes;
+      this.methods = cell.methods;
+      this.addClass();
+    };
   }
 }
