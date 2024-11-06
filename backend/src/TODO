@@ -6,3 +6,6 @@
 
 ## Change of Scope
 Instead of just SQL DDL, let's convert to any language and allow the other way around too.
+
+## Flow
+Upload image on FE -> Save to uploads/ -> Generate URL with path to uploadsController -> Use URL for AI generation
