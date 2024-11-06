@@ -1,0 +1,55 @@
+import { Component, Inject, OnInit } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+
+// TODO: Only allow 1 file upload and update indicators for file upload
+
+@Component({
+  selector: 'import-modal',
+  templateUrl: './import-modal.component.html',
+  styleUrls: ['./import-modal.component.scss']
+})
+export class ImportClassModalComponent implements OnInit {
+  readonly programmingLanguages: string[] = ['JavaScript', 'Python', 'Java', 'C#', 'C++', 'TypeScript', 'PHP', 'Swift', 'Ruby', 'Kotlin', 'Dart', 'Objective-C', 'Scala', 'Groovy', 'Visual Basic .NET', 'Lua', 'Raku', 'Smalltalk'];
+  importOption: string = '';
+  uploadedFile: File | undefined;
+  selectedLanguage: string = '';
+  
+  constructor(
+    public dialogRef: MatDialogRef<ImportClassModalComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any
+  ) {}
+  
+  ngOnInit(): void {}
+
+  onOptionChange(): void {
+    this.uploadedFile = undefined;
+    this.selectedLanguage = '';
+  };
+
+
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.uploadedFile = input.files[0];
+    }
+  }
+
+  onCancel(): void {
+    this.dialogRef.close();
+  }
+
+  onSubmit(): void {
+    if (this.importOption === 'imp-code') {
+      this.dialogRef.close({
+        importOption: this.importOption,
+        uploadedFile: this.uploadedFile,
+        selectedLanguage: this.selectedLanguage
+      });
+    } else {
+      this.dialogRef.close({
+        importOption: this.importOption,
+        uploadedFile: this.uploadedFile
+      });
+    }
+  }
+}

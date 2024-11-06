@@ -1,0 +1,37 @@
+<div class="uml-class-modal">
+  <h2 mat-dialog-title>Import New or Existing</h2>
+  <mat-dialog-content>
+    <div class="import-options">
+      <mat-radio-group [(ngModel)]="importOption">
+        <mat-radio-button value="imp-uml" (change)="onOptionChange()">Upload UML Diagram As Image</mat-radio-button>
+        <mat-radio-button value="imp-code" (change)="onOptionChange()">Upload Code For Conversion</mat-radio-button>
+        <mat-radio-button value="imp-rohanuml" (change)="onOptionChange()">Upload RohanUML File</mat-radio-button>
+      </mat-radio-group>
+
+      <div *ngIf="importOption === 'imp-uml'" class="uml-buttons">
+        <input type="file" (change)="onFileSelected($event)" hidden #fileInput>
+        <button mat-button type="button" (click)="fileInput.click()" [disabled]="uploadedFile">Upload UML Diagram (Image)</button>
+      </div>
+
+      <div *ngIf="importOption === 'imp-code'" class="uml-buttons">
+        <input type="file" (change)="onFileSelected($event)" hidden #fileInput>
+        <button mat-button type="button" (click)="fileInput.click()" [disabled]="uploadedFile">Upload Code File</button>
+        <mat-form-field appearance="fill">
+          <mat-label>Programming Language</mat-label>
+          <mat-select [(value)]="selectedLanguage">
+            <mat-option *ngFor="let language of programmingLanguages" [value]="language">{{language}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div *ngIf="importOption === 'imp-rohanuml'">
+        <input type="file" (change)="onFileSelected($event)" hidden #fileInput>
+        <button mat-button type="button" (click)="fileInput.click()" [disabled]="uploadedFile">Upload RohanUML File</button>
+      </div>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-button (click)="onCancel()" [disabled]="importOption === '' || (importOption === 'imp-code' && selectedLanguage === '')">Cancel</button>
+    <button mat-button (click)="onSubmit()" [disabled]="importOption === '' || (importOption === 'imp-code' && selectedLanguage === '')">Submit</button>
+  </mat-dialog-actions>
+</div>
