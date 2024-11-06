@@ -3,6 +3,8 @@ import * as joint from 'jointjs';
 import { isPlatformBrowser } from '@angular/common';
 import { AddClassModalComponent } from '../modals/add-class-modal/add-class-modal.component';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { ImportClassModalComponent } from '../modals/import-modal/import-modal.component';
+import { ExportClassModalComponent } from '../modals/export-modal/export-modal.component';
 
 @Component({
   selector: 'app-uml-diagram',
@@ -38,7 +40,7 @@ export class UmlDiagramComponent implements OnInit {
   }
 
   openImportDialog() {
-    const dialogRef = this.dialog.open(AddClassModalComponent);
+    const dialogRef = this.dialog.open(ImportClassModalComponent);
 
     dialogRef.afterClosed().subscribe(result => {
       const { className, attributes, methods } = result;
@@ -50,7 +52,7 @@ export class UmlDiagramComponent implements OnInit {
   }
 
   openExportDialog() {
-    const dialogRef = this.dialog.open(AddClassModalComponent);
+    const dialogRef = this.dialog.open(ExportClassModalComponent);
 
     dialogRef.afterClosed().subscribe(result => {
       const { className, attributes, methods } = result;

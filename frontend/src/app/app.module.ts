@@ -7,6 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatRadioModule } from '@angular/material/radio';
 
 import { AppComponent } from './app.component';
 import { UmlDiagramComponent } from './components/uml-diagram/uml-diagram.component';
@@ -15,12 +16,16 @@ import { ApiInterceptor } from './api.interceptor';
 import { AppRoutingModule } from './app-routing.module';
 import { AddClassModalComponent } from './components/modals/add-class-modal/add-class-modal.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ImportClassModalComponent } from './components/modals/import-modal/import-modal.component';
+import { ExportClassModalComponent } from './components/modals/export-modal/export-modal.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     UmlDiagramComponent,
-    AddClassModalComponent
+    AddClassModalComponent,
+    ImportClassModalComponent,
+    ExportClassModalComponent
   ],
   imports: [
     AppRoutingModule,
@@ -33,6 +38,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     MatFormFieldModule,
     MatIconModule,
     MatInputModule,
+    MatRadioModule,
     MatSelectModule
   ],
   providers: [
