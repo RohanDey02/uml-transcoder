@@ -15,6 +15,20 @@ h2[mat-dialog-title] {
   font-family: 'Roboto', sans-serif;
 }
 
+@mixin universal-button {
+  button[mat-button] {
+    align-self: flex-start;
+    background-color: #007bff;
+    color: #fff;
+    border-radius: 6px;
+    padding: 10px 20px;
+    transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-image: linear-gradient(to right, #007bff, #0056b3);
+    cursor: pointer;
+  }
+}
+
 mat-dialog-content {
   form {
     display: flex;
@@ -56,22 +70,7 @@ mat-dialog-content {
         }
       }
 
-      button[mat-button] {
-        align-self: flex-start;
-        background-color: #007bff;
-        color: #fff;
-        border-radius: 6px;
-        padding: 10px 20px;
-        transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        background-image: linear-gradient(to right, #007bff, #0056b3);
-      }
-
-      button[mat-button]:hover {
-        background-color: #0056b3;
-        transform: translateY(-2px);
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-      }
+      @include universal-button;
     }
   }
 }
@@ -84,20 +83,5 @@ mat-dialog-actions {
   background-color: #f8f9fa;
   border-top: 1px solid #e9ecef;
 
-  button[mat-button] {
-    min-width: 100px;
-    background-color: #007bff;
-    color: #fff;
-    border-radius: 6px;
-    padding: 10px 20px;
-    transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    background-image: linear-gradient(to right, #007bff, #0056b3);
-  }
-
-  button[mat-button]:hover {
-    background-color: #0056b3;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  }
+  @include universal-button;
 }
