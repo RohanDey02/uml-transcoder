@@ -2,3 +2,23 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+button[mat-button] {
+  align-self: flex-start;
+  background-color: #007bff;
+  color: #fff;
+  border-radius: 6px;
+  padding: 10px 20px;
+  transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-image: linear-gradient(to right, #007bff, #0056b3);
+  cursor: pointer;
+
+  &:disabled {
+    background-color: #cccccc;
+    color: #666666;
+    cursor: not-allowed;
+    box-shadow: none;
+    background-image: none;
+  }
+}
