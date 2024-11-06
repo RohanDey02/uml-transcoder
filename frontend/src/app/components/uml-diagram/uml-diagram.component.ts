@@ -43,11 +43,24 @@ export class UmlDiagramComponent implements OnInit {
     const dialogRef = this.dialog.open(ImportClassModalComponent);
 
     dialogRef.afterClosed().subscribe(result => {
-      const { className, attributes, methods } = result;
-      this.className = className;
-      this.attributes = attributes.map((a: any) => `${a.level} ${a.name}`);
-      this.methods = methods.map((m: any) => `${m.level} ${m.name}`);
-      this.addClass();
+      const { importOption, uploadedFile, selectedLanguage } = result;
+      
+      if (importOption === 'imp-rohanuml') {
+        uploadedFile.text().then((text: string) => {
+          // console.log(text);
+          // const { className, attributes, methods } = JSON.parse(text);
+          // this.className = className;
+          // this.attributes = attributes.map((a: any) => `${a.level} ${a.name}`);
+          // this.methods = methods.map((m: any) => `${m.level} ${m.name}`);
+          // this.addClass();
+        });
+      } else if (importOption === 'imp-uml') {
+        alert('Importing from UML is not yet supported.');
+        // TODO: Call endpoint with the URL
+      } else {
+        alert('Importing from code is not yet supported.');
+        // TODO: Call endpoint with the URL
+      }
     });
   }
 
@@ -55,11 +68,15 @@ export class UmlDiagramComponent implements OnInit {
     const dialogRef = this.dialog.open(ExportClassModalComponent);
 
     dialogRef.afterClosed().subscribe(result => {
-      const { className, attributes, methods } = result;
-      this.className = className;
-      this.attributes = attributes.map((a: any) => `${a.level} ${a.name}`);
-      this.methods = methods.map((m: any) => `${m.level} ${m.name}`);
-      this.addClass();
+      const { exportOption, selectedLanguage } = result;
+      
+      if (exportOption === 'exp-code') {
+        alert('Exporting to code is not yet supported.');
+      } else if (exportOption == 'exp-image') {
+        this.exportToImage();
+      } else {
+        alert('Exporting to RohanUML is not yet supported.');
+      }
     });
   }
 
@@ -72,13 +89,6 @@ export class UmlDiagramComponent implements OnInit {
         height: window.innerHeight - 140,
         async: true
       });
-
-      // Event listener to select a class
-      // this.paper.on('cell:pointerclick', (cellView) => {
-      //   const elementView = cellView as joint.dia.ElementView;
-      //   this.selectedClass = elementView. as joint.dia.Element;
-      //   console.log(`Selected class: ${this.selectedClass.get('name')}`);
-      // });
     }
   }
 

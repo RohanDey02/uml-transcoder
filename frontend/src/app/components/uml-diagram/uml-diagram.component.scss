@@ -2,14 +2,12 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 20px;
-  position: relative;
 }
 
 @mixin uml-buttons {
   display: flex;
   flex-wrap: wrap;
-  gap: 20px;
+  gap: 1rem;
   justify-content: center;
 }
 
@@ -29,7 +27,7 @@
   background-color: #007bff;
   color: #fff;
   border-radius: 6px;
-  padding: 10px 20px;
+  padding: 0.7rem 1.2rem;
   transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   background-image: linear-gradient(to right, #007bff, #0056b3);
