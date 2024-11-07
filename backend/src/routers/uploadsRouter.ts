@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { getLocalImage, uploadImage, wipeUploadsDir } from '../controllers/uploadsController';
+import { uploadImage, wipeUploadsDir } from '../controllers/uploadsController';
 import multer from 'multer';
 import { randomUUID } from 'crypto';
 
