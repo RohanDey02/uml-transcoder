@@ -10,7 +10,9 @@ import uploadsRouter from "./routers/uploadsRouter";
 dotenv.config({ path: ".env" });
 
 const app: Express = express();
+
 app.use(bodyParser.json());
+app.use(express.static('uploads'));
 app.use(
   cors({
     origin: "localhost:4200",
