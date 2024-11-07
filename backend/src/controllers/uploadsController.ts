@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 const fs = require('fs');
 const path = require('path');
 
-export const uploadImage = (req: Request, res: Response): void => {
+export const uploadFile = (req: Request, res: Response): void => {
   if (!req.file) {
     res.status(400).send('No file uploaded');
     return;

@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { uploadImage, wipeUploadsDir } from '../controllers/uploadsController';
+import { uploadFile, wipeUploadsDir } from '../controllers/uploadsController';
 import multer from 'multer';
 import { randomUUID } from 'crypto';
 
@@ -17,7 +17,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-uploadsRouter.post('/', upload.single('image'), uploadImage);
+uploadsRouter.post('/', upload.single('file'), uploadFile);
 
 uploadsRouter.delete('/', wipeUploadsDir);
 

@@ -9,4 +9,11 @@ export class ApiService {
   endpoint = environment.apiEndpoint;
 
   constructor(private http: HttpClient) {}
+
+  uploadFile(file: File) {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    return this.http.post(`${this.endpoint}/api/v1/upload`, formData);
+  }
 }
