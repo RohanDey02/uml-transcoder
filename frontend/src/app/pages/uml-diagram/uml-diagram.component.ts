@@ -1,10 +1,10 @@
 import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import * as joint from 'jointjs';
 import { isPlatformBrowser } from '@angular/common';
-import { AddClassModalComponent } from '../modals/add-class-modal/add-class-modal.component';
+import { AddClassModalComponent } from '../../components/modals/add-class-modal/add-class-modal.component';
 import { MatDialog } from '@angular/material/dialog';
-import { ImportClassModalComponent } from '../modals/import-modal/import-modal.component';
-import { ExportClassModalComponent } from '../modals/export-modal/export-modal.component';
+import { ImportClassModalComponent } from '../../components/modals/import-modal/import-modal.component';
+import { ExportClassModalComponent } from '../../components/modals/export-modal/export-modal.component';
 import * as fflate from 'fflate';
 
 @Component({

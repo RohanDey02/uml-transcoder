@@ -10,7 +10,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatRadioModule } from '@angular/material/radio';
 
 import { AppComponent } from './app.component';
-import { UmlDiagramComponent } from './components/uml-diagram/uml-diagram.component';
+import { UmlDiagramComponent } from './pages/uml-diagram/uml-diagram.component';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ApiInterceptor } from './api.interceptor';
 import { AppRoutingModule } from './app-routing.module';
