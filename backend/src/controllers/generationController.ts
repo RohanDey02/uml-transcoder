@@ -10,9 +10,9 @@ enum GenerationType {
 export const generateAIResponse = (async (req: Request, res: Response): Promise<void> => {
   const { prompt, artifactSrc, purpose } = req.body;
 
-  const openAIKey = req.headers['authorization'];
-  if (!openAIKey) {
-    res.status(400).json({ error: 'Missing OpenAI API key in headers.' });
+  const huggingFaceKey = req.headers['authorization'];
+  if (!huggingFaceKey) {
+    res.status(400).json({ error: 'Missing HuggingFace API key in headers.' });
   }
 
   if (!prompt || !purpose) {
@@ -70,7 +70,7 @@ export const generateAIResponse = (async (req: Request, res: Response): Promise<
   ]
 
   try {
-    const inference = new HfInference(openAIKey as string);
+    const inference = new HfInference(huggingFaceKey as string);
     const aiResponse = await inference.chatCompletion({
       model: model,
       messages: [
