@@ -2,8 +2,22 @@ import { Request, Response } from 'express';
 const fs = require('fs');
 const path = require('path');
 
+export const uploadImage = (req: Request, res: Response): void => {
+  if (!req.file) {
+    res.status(400).send('No file uploaded');
+    return;
+  }
+
+  res.send({ filename: req.file.filename });
+};
+
 export const getLocalImage = (req: Request, res: Response): void => {
   const { imageName } = req.query;
+
+  if (!imageName) {
+    res.status(400).json({error: 'No image name provided'});
+    return;
+  }
 
   const imagePath = path.join(__dirname, '..', '..', 'uploads', imageName as string);
 
