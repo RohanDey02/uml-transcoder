@@ -10,6 +10,9 @@ export class ApiService {
 
   constructor(private http: HttpClient) {}
 
+  /*
+   * Uploads a file to the server
+   */
   uploadFile(file: File) {
     const formData: FormData = new FormData();
     formData.append('file', file);
@@ -17,32 +20,58 @@ export class ApiService {
     return this.http.post(`${this.endpoint}/api/v1/upload`, formData);
   }
 
-  generateUMLToCode(artifactSrc: string, language: string) {
+  /*
+   * AI Generation API Functions
+   */
+  generateUMLToCode(artifactSrc: string, language: string, huggingFaceKey: string) {
     const prompt: string = `Take the UML diagram (attached as an image) and convert to ${language} code.`;
 
     return this.http.post(`${this.endpoint}/api/v1/generate`, {
       prompt,
       artifactSrc,
       purpose: "UML_TO_CODE"
+    }, {
+      headers: {
+        Authorization: `Bearer ${huggingFaceKey}`
+      }
     });
   }
 
-  generateUMLToJSON(artifactSrc: string) {
+  generateUMLToJSON(artifactSrc: string, huggingFaceKey: string) {
     const prompt: string = 'Take this UML diagram (attached as an image) and convert to desired form.';
 
     return this.http.post(`${this.endpoint}/api/v1/generate`, {
       prompt,
       artifactSrc,
       purpose: "UML_TO_JSON",
+    }, {
+      headers: {
+        Authorization: `Bearer ${huggingFaceKey}`
+      }
     });
   }
 
-  generateCodeToJSON(language: string) {
+  generateCodeToJSON(language: string, huggingFaceKey: string) {
     const prompt: string = `Take this ${language} code and convert to desired form.`;
 
     return this.http.post(`${this.endpoint}/api/v1/generate`, {
       prompt,
       purpose: "CODE_TO_JSON",
+    }, {
+      headers: {
+        Authorization: `Bearer ${huggingFaceKey}`
+      }
+    });
+  }
+
+  /*
+   * Acts as a proxy to the web to extract content from a URL
+   */
+  extractWebContent(url: string) {
+    return this.http.get(`${this.endpoint}/api/v1/import`, {
+      params: {
+        targetUrl: url
+      }
     });
   }
 }
