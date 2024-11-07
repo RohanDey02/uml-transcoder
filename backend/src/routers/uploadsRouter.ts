@@ -19,8 +19,6 @@ const upload = multer({ storage });
 
 uploadsRouter.post('/', upload.single('image'), uploadImage);
 
-uploadsRouter.get('/', getLocalImage);
-
 uploadsRouter.delete('/', wipeUploadsDir);
 
 export default uploadsRouter;

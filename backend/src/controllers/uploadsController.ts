@@ -11,26 +11,6 @@ export const uploadImage = (req: Request, res: Response): void => {
   res.send({ filename: req.file.filename });
 };
 
-export const getLocalImage = (req: Request, res: Response): void => {
-  const { imageName } = req.query;
-
-  if (!imageName) {
-    res.status(400).json({error: 'No image name provided'});
-    return;
-  }
-
-  const imagePath = path.join(__dirname, '..', '..', 'uploads', imageName as string);
-
-  fs.access(imagePath, fs.constants.F_OK, (err: any) => {
-    if (err) {
-      res.status(404).send('Image not found');
-      return;
-    }
-
-    res.sendFile(imagePath);
-  });
-};
-
 // TODO: Attach to a cron job to wipe at ~4:00 AM daily, etc.
 export const wipeUploadsDir = (req: Request, res: Response): void => {
   const uploadsDir = path.join(__dirname, '..', '..', 'uploads');
