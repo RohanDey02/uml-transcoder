@@ -13,6 +13,7 @@ export class ImportClassModalComponent implements OnInit {
   importOption: string = '';
   uploadedFile: File | undefined;
   selectedLanguage: string = '';
+  huggingFaceKey: string = '';
   
   constructor(
     public dialogRef: MatDialogRef<ImportClassModalComponent>,
@@ -39,11 +40,19 @@ export class ImportClassModalComponent implements OnInit {
   }
 
   onSubmit(): void {
-    if (this.importOption === 'imp-code') {
+    if (this.importOption === 'imp-uml') {
       this.dialogRef.close({
         importOption: this.importOption,
         uploadedFile: this.uploadedFile,
-        selectedLanguage: this.selectedLanguage
+        huggingFaceKey: this.huggingFaceKey
+      });
+    }
+    else if (this.importOption === 'imp-code') {
+      this.dialogRef.close({
+        importOption: this.importOption,
+        uploadedFile: this.uploadedFile,
+        selectedLanguage: this.selectedLanguage,
+        huggingFaceKey: this.huggingFaceKey
       });
     } else {
       this.dialogRef.close({

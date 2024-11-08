@@ -45,7 +45,7 @@ export class UmlDiagramComponent implements OnInit {
     const dialogRef = this.dialog.open(ImportClassModalComponent);
 
     dialogRef.afterClosed().subscribe(result => {
-      const { importOption, uploadedFile, selectedLanguage } = result;
+      const { importOption, uploadedFile, selectedLanguage, huggingFaceKey } = result;
 
       if (importOption === 'imp-rohanuml') {
         uploadedFile.text().then((text: string) => {
@@ -65,14 +65,14 @@ export class UmlDiagramComponent implements OnInit {
     const dialogRef = this.dialog.open(ExportClassModalComponent);
 
     dialogRef.afterClosed().subscribe(result => {
-      const { exportOption, selectedLanguage } = result;
+      const { exportOption, selectedLanguage, huggingFaceKey } = result;
 
       if (exportOption === 'exp-code') {
         this.formatAsFile().then((file: File) => {
           this.api.uploadFile(file).subscribe({
             next: (response: any) => {
               const filename = response.filename;
-              this.api.generateUMLToCode(filename, selectedLanguage, 'huggingFaceKey').subscribe({
+              this.api.generateUMLToCode(filename, selectedLanguage, huggingFaceKey).subscribe({
                 next: (response: any) => {
                   console.log(response);
                 },

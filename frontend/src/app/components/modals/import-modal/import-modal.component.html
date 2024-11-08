@@ -1,5 +1,5 @@
 <div class="uml-class-modal">
-  <h2 mat-dialog-title>Import New or Existing</h2>
+  <h2 mat-dialog-title>Import From Image / Code / RohanUML</h2>
   <mat-dialog-content>
     <div class="import-options">
       <mat-radio-group [(ngModel)]="importOption">
@@ -11,6 +11,14 @@
       <div *ngIf="importOption === 'imp-uml'" class="uml-buttons">
         <input type="file" (change)="onFileSelected($event)" hidden #fileInput>
         <button mat-button type="button" (click)="fileInput.click()" [disabled]="uploadedFile">Upload UML Diagram (Image)</button>
+        <mat-form-field appearance="fill">
+          <mat-label>Hugging Face API Key</mat-label>
+          <input
+            matInput
+            formControlName="huggingFaceKey"
+            placeholder="Enter your Hugging Face API Key"
+          />
+        </mat-form-field>
       </div>
 
       <div *ngIf="importOption === 'imp-code'" class="uml-buttons">
@@ -21,6 +29,14 @@
           <mat-select [(value)]="selectedLanguage">
             <mat-option *ngFor="let language of programmingLanguages" [value]="language">{{language}}</mat-option>
           </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Hugging Face API Key</mat-label>
+          <input
+            matInput
+            formControlName="huggingFaceKey"
+            placeholder="Enter your Hugging Face API Key"
+          />
         </mat-form-field>
       </div>
 

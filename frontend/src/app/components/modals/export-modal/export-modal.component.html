@@ -15,6 +15,14 @@
             <mat-option *ngFor="let language of programmingLanguages" [value]="language">{{language}}</mat-option>
           </mat-select>
         </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Hugging Face API Key</mat-label>
+          <input
+            matInput
+            formControlName="huggingFaceKey"
+            placeholder="Enter your Hugging Face API Key"
+          />
+        </mat-form-field>
       </div>
     </div>
   </mat-dialog-content>

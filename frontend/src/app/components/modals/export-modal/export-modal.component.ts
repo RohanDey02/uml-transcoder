@@ -10,6 +10,7 @@ export class ExportClassModalComponent implements OnInit {
   readonly programmingLanguages: string[] = ['JavaScript', 'Python', 'Java', 'C#', 'C++', 'TypeScript', 'PHP', 'Swift', 'Ruby', 'Kotlin', 'Dart', 'Objective-C', 'Scala', 'Groovy', 'Visual Basic .NET', 'Lua', 'Raku', 'Smalltalk'];
   exportOption: string = '';
   selectedLanguage: string = '';
+  huggingFaceKey: string = '';
   
   constructor(
     public dialogRef: MatDialogRef<ExportClassModalComponent>,
@@ -30,7 +31,8 @@ export class ExportClassModalComponent implements OnInit {
     if (this.exportOption === 'exp-code') {
       this.dialogRef.close({
         exportOption: this.exportOption,
-        selectedLanguage: this.selectedLanguage
+        selectedLanguage: this.selectedLanguage,
+        huggingFaceKey: this.huggingFaceKey
       });
     } else {
       this.dialogRef.close({
