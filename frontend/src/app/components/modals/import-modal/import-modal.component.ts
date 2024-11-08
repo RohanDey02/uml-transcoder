@@ -25,6 +25,7 @@ export class ImportClassModalComponent implements OnInit {
   onOptionChange(): void {
     this.uploadedFile = undefined;
     this.selectedLanguage = '';
+    this.huggingFaceKey = '';
   };
 
 

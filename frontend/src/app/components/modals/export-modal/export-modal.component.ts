@@ -21,6 +21,7 @@ export class ExportClassModalComponent implements OnInit {
 
   onOptionChange(): void {
     this.selectedLanguage = '';
+    this.huggingFaceKey = '';
   };
 
   onCancel(): void {
