@@ -42,7 +42,7 @@ export class ApiService {
 
     return this.http.post(`${this.endpoint}/api/v1/generate`, {
       prompt,
-      artifactSrc,
+      artifactSrc: `${this.endpoint}/${artifactSrc}`,
       purpose: "UML_TO_JSON",
     }, {
       headers: {

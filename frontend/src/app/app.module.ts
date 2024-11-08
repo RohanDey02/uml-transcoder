@@ -11,7 +11,7 @@ import { MatRadioModule } from '@angular/material/radio';
 
 import { AppComponent } from './app.component';
 import { UmlDiagramComponent } from './pages/uml-diagram/uml-diagram.component';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { ApiInterceptor } from './api.interceptor';
 import { AppRoutingModule } from './app-routing.module';
 import { AddClassModalComponent } from './components/modals/add-class-modal/add-class-modal.component';
@@ -32,6 +32,7 @@ import { ExportClassModalComponent } from './components/modals/export-modal/expo
     BrowserModule,
     BrowserAnimationsModule,
     FormsModule,
+    HttpClientModule,
     ReactiveFormsModule,
     MatDialogModule,
     MatDividerModule,
