@@ -5,6 +5,7 @@ import { AddClassModalComponent } from '../../components/modals/add-class-modal/
 import { MatDialog } from '@angular/material/dialog';
 import { ImportClassModalComponent } from '../../components/modals/import-modal/import-modal.component';
 import { ExportClassModalComponent } from '../../components/modals/export-modal/export-modal.component';
+import { ApiService } from '../../services/api.service';
 import * as fflate from 'fflate';
 
 @Component({
@@ -22,7 +23,7 @@ export class UmlDiagramComponent implements OnInit {
   methods: string[] = [];
   lastAddedClass: joint.shapes.uml.Class | null = null;
 
-  constructor(@Inject(PLATFORM_ID) private platformId: Object, private dialog: MatDialog) { }
+  constructor(@Inject(PLATFORM_ID) private platformId: Object, private dialog: MatDialog, private api: ApiService) { }
 
   getGraph() {
     return this.graph;
@@ -67,11 +68,31 @@ export class UmlDiagramComponent implements OnInit {
       const { exportOption, selectedLanguage } = result;
 
       if (exportOption === 'exp-code') {
-        alert('Exporting to code is not yet supported.');
+        this.formatAsFile().then((file: File) => {
+          this.api.uploadFile(file).subscribe({
+            next: (response: any) => {
+              const filename = response.filename;
+              this.api.generateUMLToCode(filename, selectedLanguage, 'huggingFaceKey').subscribe({
+                next: (response: any) => {
+                  console.log(response);
+                },
+                error: (err: Error) => {
+                  console.error(err);
+                }
+              })
+            },
+            error: (err: Error) => {
+              console.error(err);
+            }
+          });
+        }).catch((err: Error) => {
+          console.error(err);
+        });
+
+        // this.api.generateUMLToCode()
       } else if (exportOption == 'exp-image') {
         this.exportToImage();
       } else {
-        // alert('Exporting to RohanUML is not yet supported.');
         this.exportToRohanUML();
       }
     });
@@ -163,6 +184,33 @@ export class UmlDiagramComponent implements OnInit {
     this.graph.clear();
   }
 
+  formatAsFile(): Promise<File> {
+    const svgString = new XMLSerializer().serializeToString(this.paper.svg);
+
+    const canvas: HTMLCanvasElement = document.createElement('canvas');
+    const context: CanvasRenderingContext2D = canvas.getContext('2d')!;
+    const image: HTMLImageElement = new Image(window.innerWidth - 50, window.innerHeight - 140);
+
+    return new Promise<File>((resolve, reject) => {
+      image.onload = () => {
+        canvas.width = image.width;
+        canvas.height = image.height;
+        context?.drawImage(image, 0, 0);
+
+        canvas.toBlob((blob) => {
+          if (blob) {
+            const file = new File([blob], 'uml-diagram.png', { type: 'image/png' });
+            resolve(file);
+          } else {
+            reject(new Error('Canvas toBlob failed.'));
+          }
+        });
+      };
+
+      image.src = 'data:image/svg+xml;base64,' + btoa(decodeURIComponent(encodeURIComponent(svgString)));
+    });
+  }
+
   exportToImage() {
     const svgString = new XMLSerializer().serializeToString(this.paper.svg);
 
@@ -199,7 +247,7 @@ export class UmlDiagramComponent implements OnInit {
 
     // Set file content as a data URL
     link.href = 'data:text/plain;charset=utf-8,' + encodeURIComponent(fflate.strFromU8(compressed, true));
-    
+
     // Set the download attribute with the desired file name
     link.download = 'uml-diagram.rohanuml';
 
