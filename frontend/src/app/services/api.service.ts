@@ -28,11 +28,11 @@ export class ApiService {
 
     return this.http.post(`${this.endpoint}/api/v1/generate`, {
       prompt,
-      artifactSrc,
+      artifactSrc: `${this.endpoint}/${artifactSrc}`,
       purpose: "UML_TO_CODE"
     }, {
       headers: {
-        Authorization: `Bearer ${huggingFaceKey}`
+        Authorization: huggingFaceKey
       }
     });
   }
@@ -46,7 +46,7 @@ export class ApiService {
       purpose: "UML_TO_JSON",
     }, {
       headers: {
-        Authorization: `Bearer ${huggingFaceKey}`
+        Authorization: huggingFaceKey
       }
     });
   }
@@ -59,7 +59,7 @@ export class ApiService {
       purpose: "CODE_TO_JSON",
     }, {
       headers: {
-        Authorization: `Bearer ${huggingFaceKey}`
+        Authorization: huggingFaceKey
       }
     });
   }

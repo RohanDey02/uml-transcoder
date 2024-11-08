@@ -68,18 +68,17 @@ export class UmlDiagramComponent implements OnInit {
       const { exportOption, selectedLanguage, huggingFaceKey } = result;
 
       if (exportOption === 'exp-code') {
-        this.formatAsFile().then((file: File) => {
+        this.formatAsFile().then(file => {
           this.api.uploadFile(file).subscribe({
             next: (response: any) => {
-              const filename = response.filename;
-              this.api.generateUMLToCode(filename, selectedLanguage, huggingFaceKey).subscribe({
+              this.api.generateUMLToCode(response.filename, selectedLanguage, huggingFaceKey).subscribe({
                 next: (response: any) => {
                   console.log(response);
                 },
                 error: (err: Error) => {
                   console.error(err);
                 }
-              })
+              });
             },
             error: (err: Error) => {
               console.error(err);
@@ -186,50 +185,60 @@ export class UmlDiagramComponent implements OnInit {
 
   formatAsFile(): Promise<File> {
     const svgString = new XMLSerializer().serializeToString(this.paper.svg);
-
-    const canvas: HTMLCanvasElement = document.createElement('canvas');
-    const context: CanvasRenderingContext2D = canvas.getContext('2d')!;
-    const image: HTMLImageElement = new Image(window.innerWidth - 50, window.innerHeight - 140);
+    const svgBase64 = `data:image/svg+xml;base64,${btoa(unescape(encodeURIComponent(svgString)))}`;
 
     return new Promise<File>((resolve, reject) => {
-      image.onload = () => {
-        canvas.width = image.width;
-        canvas.height = image.height;
-        context?.drawImage(image, 0, 0);
+      const image = new Image(window.innerWidth - 50, window.innerHeight - 140);
+      image.src = svgBase64;
 
-        canvas.toBlob((blob) => {
-          if (blob) {
-            const file = new File([blob], 'uml-diagram.png', { type: 'image/png' });
-            resolve(file);
-          } else {
-            reject(new Error('Canvas toBlob failed.'));
-          }
-        });
+      image.onload = () => {
+        const offscreenCanvas = new OffscreenCanvas(image.width, image.height);
+        const context = offscreenCanvas.getContext('2d')!;
+
+        context.drawImage(image, 0, 0);
+
+        offscreenCanvas.convertToBlob({ type: 'image/png' }).then(blob => {
+          const file = new File([blob], 'uml-diagram.png', { type: 'image/png' });
+          resolve(file);
+        }).catch(reject);
       };
 
-      image.src = 'data:image/svg+xml;base64,' + btoa(decodeURIComponent(encodeURIComponent(svgString)));
+      image.onerror = () => {
+        reject(new Error("Failed to load the SVG for PNG conversion"));
+      };
     });
   }
 
   exportToImage() {
     const svgString = new XMLSerializer().serializeToString(this.paper.svg);
+    const svgBase64 = `data:image/svg+xml;base64,${btoa(unescape(encodeURIComponent(svgString)))}`;
 
-    const canvas = document.createElement('canvas');
-    const context = canvas.getContext('2d');
+    // Create a new image element and set its source to the base64 SVG
     const image = new Image(window.innerWidth - 50, window.innerHeight - 140);
+    image.src = svgBase64;
 
     image.onload = () => {
-      canvas.width = image.width;
-      canvas.height = image.height;
-      context?.drawImage(image, 0, 0);
+      // Convert the image to a Blob using an offscreen canvas (hidden)
+      const offscreenCanvas = new OffscreenCanvas(image.width, image.height);
+      const context = offscreenCanvas.getContext('2d')!;
 
-      const a = document.createElement('a');
-      a.href = canvas.toDataURL('image/png');
-      a.download = 'uml-diagram.png';
-      a.click();
+      // Draw the SVG image to the offscreen canvas
+      context.drawImage(image, 0, 0);
+
+      // Export to a Blob in PNG format
+      offscreenCanvas.convertToBlob({ type: 'image/png' }).then(blob => {
+        const pngUrl = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.setAttribute('download', 'image.png');
+        a.setAttribute('href', pngUrl);
+        a.click();
+        URL.revokeObjectURL(pngUrl);
+      });
     };
 
-    image.src = 'data:image/svg+xml;base64,' + btoa(decodeURIComponent(encodeURIComponent(svgString)));
+    image.onerror = () => {
+      console.error("Failed to load the SVG for PNG conversion");
+    };
   }
 
   exportToRohanUML() {
