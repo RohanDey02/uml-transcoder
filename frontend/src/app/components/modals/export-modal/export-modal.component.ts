@@ -1,5 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'export-modal',
@@ -7,7 +8,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
   styleUrls: ['./export-modal.component.scss']
 })
 export class ExportClassModalComponent implements OnInit {
-  readonly programmingLanguages: string[] = ['JavaScript', 'Python', 'Java', 'C#', 'C++', 'TypeScript', 'SQL DDL', 'PHP', 'Swift', 'Ruby', 'Kotlin', 'Dart', 'Objective-C', 'Scala', 'Groovy', 'Visual Basic .NET', 'Lua', 'Raku', 'Smalltalk'];
+  readonly programmingLanguages: string[] = Array.from(environment.programmingLanguages).sort();
   exportOption: string = '';
   selectedLanguage: string = '';
   huggingFaceKey: string = '';

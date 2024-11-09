@@ -1,5 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { environment } from '../../../environments/environment';
 
 // TODO: Only allow 1 file upload and update indicators for file upload
 
@@ -9,7 +10,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
   styleUrls: ['./import-modal.component.scss']
 })
 export class ImportClassModalComponent implements OnInit {
-  readonly programmingLanguages: string[] = ['JavaScript', 'Python', 'Java', 'C#', 'C++', 'TypeScript', 'PHP', 'Swift', 'Ruby', 'Kotlin', 'Dart', 'Objective-C', 'Scala', 'Groovy', 'Visual Basic .NET', 'Lua', 'Raku', 'Smalltalk'];
+  readonly programmingLanguages: string[] = Array.from(environment.programmingLanguages).sort();
   importOption: string = '';
   uploadedFile: File | undefined;
   selectedLanguage: string = '';
