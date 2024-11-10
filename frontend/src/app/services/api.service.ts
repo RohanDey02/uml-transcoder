@@ -51,8 +51,8 @@ export class ApiService {
     });
   }
 
-  generateCodeToJSON(language: string, huggingFaceKey: string) {
-    const prompt: string = `Take this ${language} code and convert to desired form.`;
+  generateCodeToJSON(code: string, language: string, huggingFaceKey: string) {
+    const prompt: string = `Take this ${language} code and convert to desired form.\n\n${code}`;
 
     return this.http.post(`${this.endpoint}/api/v1/generate`, {
       prompt,

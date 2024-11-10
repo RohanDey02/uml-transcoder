@@ -55,8 +55,16 @@ export class UmlDiagramComponent implements OnInit {
         alert('Importing from UML is not yet supported.');
         // TODO: Call endpoint with the URL
       } else {
-        alert('Importing from code is not yet supported.');
-        // TODO: Call endpoint with the URL
+        uploadedFile.text().then((text: string) => {
+          this.api.generateCodeToJSON(text, selectedLanguage, huggingFaceKey).subscribe({
+            next: (response: any) => {
+              this.insertGraphData(JSON.parse(response.result));
+            },
+            error: (err: Error) => {
+              console.error(err);
+            }
+          });
+        });
       }
     });
   }
@@ -270,7 +278,11 @@ export class UmlDiagramComponent implements OnInit {
     const decompressed = fflate.gunzipSync(fflate.strToU8(text, true));
     const graphData = JSON.parse(new TextDecoder().decode(decompressed));
 
-    for (const cell of Array.from(graphData) as { name: string; attributes: string[]; methods: string[] }[]) {
+    this.insertGraphData(graphData);
+  }
+
+  insertGraphData(graphData: { name: string; attributes: string[]; methods: string[] }[]) {
+    for (const cell of Array.from(graphData)) {
       this.className = cell.name;
       this.attributes = cell.attributes;
       this.methods = cell.methods;

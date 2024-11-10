@@ -29,7 +29,6 @@ export class ImportClassModalComponent implements OnInit {
     this.huggingFaceKey = '';
   };
 
-
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
