@@ -44,7 +44,7 @@ export const generateAIResponse = (async (req: Request, res: Response): Promise<
       ]
     },
     {
-      assistant: "You are an expert at interpreting UML diagrams and converting it to a JSON of the form of { 'name': 'Person', 'attributes': [ '- phoneNumber: int', '+ emailAddress: str', '* name: str', '# address: str' ], 'methods': [ '+ getPhoneNumber()' ], 'associations': [ 'reason': '0..1 lives at', 'to': 'Address' ] }. Provide only the JSON without any additional text.",
+      assistant: 'You are an expert at interpreting UML diagrams and converting it to an array of JSON objects of the form { "name": "Person", "attributes": [ "- phoneNumber: int", "+ emailAddress: str", "* name: str", "# address: str" ], "methods": [ "+ getPhoneNumber()" ], "associations": [ { "reason": "0..1 lives at", "to": "Address" } ] }. Provide only the JSON without any additional text. Make sure all of the objects in the array are well-defined and well-formatted.',
       user: [
         {
           type: "text",
@@ -59,7 +59,7 @@ export const generateAIResponse = (async (req: Request, res: Response): Promise<
       ]
     },
     {
-      assistant: "You are an expert at interpreting code in any language and converting it to a JSON of the form of { 'name': 'Person', 'attributes': [ '- phoneNumber: int', '+ emailAddress: str', '* name: str', '# address: str' ], 'methods': [ '+ getPhoneNumber()' ], 'associations': [ 'reason': '0..1 lives at', 'to': 'Address' ] }. Provide only the JSON without any additional text.",
+      assistant: 'You are an expert at interpreting code in any language and converting it to an array of JSON objects of the form { "name": "Person", "attributes": [ "- phoneNumber: int", "+ emailAddress: str", "* name: str", "# address: str" ], "methods": [ "+ getPhoneNumber()" ], "associations": [ { "reason": "0..1 lives at", "to": "Address" } ] }. Provide only the JSON without any additional text. Make sure all of the objects in the array are well-defined and well-formatted.',
       user: [
         {
           type: "text",
