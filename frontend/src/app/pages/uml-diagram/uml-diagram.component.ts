@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
+import { Component, Inject, OnInit, PLATFORM_ID, HostListener } from '@angular/core';
 import * as joint from 'jointjs';
 import { isPlatformBrowser } from '@angular/common';
 import { AddClassModalComponent } from '../../components/modals/add-class-modal/add-class-modal.component';
@@ -111,9 +111,9 @@ export class UmlDiagramComponent implements OnInit {
       this.paper = new joint.dia.Paper({
         el: document.getElementById('paper'),
         model: this.graph,
-        width: window.innerWidth - 50,
-        height: window.innerHeight - 140,
-        async: true
+        async: true,
+        width: window.innerWidth - 35,
+        height: window.innerHeight - 140
       });
 
       this.paper.on('element:pointerdown', () => {
@@ -122,10 +122,15 @@ export class UmlDiagramComponent implements OnInit {
     }
   }
 
+  @HostListener('window:resize', ['$event'])
+  onResize(event: Event): void {
+    this.paper.setDimensions(window.innerWidth - 35, window.innerHeight - 140);
+  }
+
   addClass() {
     this.selectedClasses = [];
 
-    const x = Math.random() * (window.innerWidth - 150);
+    const x = Math.random() * (window.innerWidth - 135);
     const y = Math.random() * (window.innerHeight - 240);
 
     const umlDesignAttrs: any = (col1: string, col2: string, gradient: boolean = false) => {
@@ -267,7 +272,7 @@ export class UmlDiagramComponent implements OnInit {
     const svgBase64 = `data:image/svg+xml;base64,${btoa(unescape(encodeURIComponent(svgString)))}`;
 
     return new Promise<File>((resolve, reject) => {
-      const image = new Image(window.innerWidth - 50, window.innerHeight - 140);
+      const image = new Image(window.innerWidth - 35, window.innerHeight - 140);
       image.src = svgBase64;
 
       image.onload = () => {
@@ -293,7 +298,7 @@ export class UmlDiagramComponent implements OnInit {
     const svgBase64 = `data:image/svg+xml;base64,${btoa(unescape(encodeURIComponent(svgString)))}`;
 
     // Create a new image element and set its source to the base64 SVG
-    const image = new Image(window.innerWidth - 50, window.innerHeight - 140);
+    const image = new Image(window.innerWidth - 35, window.innerHeight - 140);
     image.src = svgBase64;
 
     image.onload = () => {
