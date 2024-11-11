@@ -18,12 +18,14 @@ import { AddClassModalComponent } from './components/modals/add-class-modal/add-
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ImportClassModalComponent } from './components/modals/import-modal/import-modal.component';
 import { ExportClassModalComponent } from './components/modals/export-modal/export-modal.component';
+import { ConnectClassModalComponent } from './components/modals/connect-class-modal/connect-class-modal.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     UmlDiagramComponent,
     AddClassModalComponent,
+    ConnectClassModalComponent,
     ImportClassModalComponent,
     ExportClassModalComponent
   ],

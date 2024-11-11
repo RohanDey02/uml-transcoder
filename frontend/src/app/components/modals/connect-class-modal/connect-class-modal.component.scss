@@ -1,0 +1,69 @@
+.uml-class-modal {
+  width: 80vw;
+  margin: auto;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+h2[mat-dialog-title] {
+  font-size: 26px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: #444;
+  text-align: center;
+  font-family: 'Roboto', sans-serif;
+}
+
+mat-dialog-content {
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+
+    mat-form-field {
+      width: 100%;
+    }
+
+    div[formArrayName="attributes"],
+    div[formArrayName="methods"] {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+
+      div[formGroupName] {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+
+        mat-form-field {
+          flex: 1;
+        }
+
+        button[mat-icon-button] {
+          margin-top: 24px;
+          transition: transform 0.3s, box-shadow 0.3s;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        button[mat-icon-button]:hover {
+          transform: scale(1.1);
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+      }
+    }
+  }
+}
+
+mat-dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 20px;
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-top: 1px solid #e9ecef;
+}
