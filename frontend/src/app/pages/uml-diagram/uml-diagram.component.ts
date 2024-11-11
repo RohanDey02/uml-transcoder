@@ -1,10 +1,11 @@
 import { Component, Inject, OnInit, PLATFORM_ID, HostListener } from '@angular/core';
 import * as joint from 'jointjs';
 import { isPlatformBrowser } from '@angular/common';
-import { AddClassModalComponent } from '../../components/modals/add-class-modal/add-class-modal.component';
 import { MatDialog } from '@angular/material/dialog';
-import { ImportClassModalComponent } from '../../components/modals/import-modal/import-modal.component';
+import { AddClassModalComponent } from '../../components/modals/add-class-modal/add-class-modal.component';
+import { ConnectClassModalComponent } from '../../components/modals/connect-class-modal/connect-class-modal.component';
 import { ExportClassModalComponent } from '../../components/modals/export-modal/export-modal.component';
+import { ImportClassModalComponent } from '../../components/modals/import-modal/import-modal.component';
 import { ApiService } from '../../services/api.service';
 import * as fflate from 'fflate';
 
@@ -39,6 +40,14 @@ export class UmlDiagramComponent implements OnInit {
       this.attributes = attributes.map((a: any) => `${a.level} ${a.name}`);
       this.methods = methods.map((m: any) => `${m.level} ${m.name}`);
       this.addClass();
+    });
+  }
+
+  openConnectClassDialog() {
+    const dialogRef = this.dialog.open(ConnectClassModalComponent);
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(result);
     });
   }
 
@@ -127,8 +136,13 @@ export class UmlDiagramComponent implements OnInit {
       });
 
       this.paper.on('element:pointerdown', () => {
+        this.selectedClasses.forEach(c => {
+          const checkbox = document.getElementById(`checkbox-${c.id}`) as HTMLInputElement;
+          if (checkbox) {
+            checkbox.checked = false;
+          }
+        });
         this.selectedClasses = [];
-        this.handleCheckboxState();
       });
     }
   }
@@ -199,19 +213,18 @@ export class UmlDiagramComponent implements OnInit {
 
         // Create and style the checkbox
         const checkbox = document.createElement('input');
+        checkbox.id = `checkbox-${umlClass.id}`;
         checkbox.type = 'checkbox';
         checkbox.style.width = '16px';
         checkbox.style.height = '16px';
-
+        
         // Add functionality to checkbox
         checkbox.addEventListener('change', () => {
-          if (checkbox.checked) {
-            if (!this.selectedClasses.includes(umlClass)) {
-              this.selectedClasses.push(umlClass);
-
-              if (this.selectedClasses.length === 2) {
-                this.openAddClassDialog();
-              }
+          if (checkbox.checked && !this.selectedClasses.includes(umlClass)) {
+            this.selectedClasses.push(umlClass);
+            
+            if (this.selectedClasses.length === 2) {
+              this.openAddClassDialog();
             }
           } else {
             const index = this.selectedClasses.indexOf(umlClass);
@@ -219,8 +232,6 @@ export class UmlDiagramComponent implements OnInit {
               this.selectedClasses.splice(index, 1);
             }
           }
-
-          this.handleCheckboxState();
         });
 
         // Append checkbox to div, div to foreignObject, and foreignObject to the elementView
@@ -249,12 +260,12 @@ export class UmlDiagramComponent implements OnInit {
     } else {
       // Disable all checkboxes if there are 2 selected or total UML classes <= 1
       const disableCheckboxes = this.selectedClasses.length === 2 || this.graph.getCells().length <= 1;
-  
+
       // Get all checkbox elements
       checkboxes.forEach((checkbox) => {
         const inputElement = checkbox as HTMLInputElement; // Cast to HTMLInputElement
         inputElement.style.display = 'block';
-  
+
         // If checkbox is already checked (part of the selected classes), leave it enabled
         const isChecked = inputElement.checked;
         inputElement.disabled = disableCheckboxes && !isChecked;
