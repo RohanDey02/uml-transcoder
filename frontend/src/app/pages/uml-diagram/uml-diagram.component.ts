@@ -27,6 +27,33 @@ export class UmlDiagramComponent implements OnInit {
 
   constructor(@Inject(PLATFORM_ID) private platformId: Object, private dialog: MatDialog, private api: ApiService) { }
 
+  ngOnInit(): void {
+    if (isPlatformBrowser(this.platformId)) {
+      this.paper = new joint.dia.Paper({
+        el: document.getElementById('paper'),
+        model: this.graph,
+        async: true,
+        width: window.innerWidth - 35,
+        height: window.innerHeight - 155
+      });
+
+      this.paper.on('element:pointerdown', () => {
+        this.selectedClasses.forEach(c => {
+          const checkbox = document.getElementById(`checkbox-${c.id}`) as HTMLInputElement;
+          if (checkbox) {
+            checkbox.checked = false;
+          }
+        });
+        this.selectedClasses = [];
+      });
+    }
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: Event): void {
+    this.paper.setDimensions(window.innerWidth - 35, window.innerHeight - 155);
+  }
+
   getGraph() {
     return this.graph;
   }
@@ -125,38 +152,11 @@ export class UmlDiagramComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-    if (isPlatformBrowser(this.platformId)) {
-      this.paper = new joint.dia.Paper({
-        el: document.getElementById('paper'),
-        model: this.graph,
-        async: true,
-        width: window.innerWidth - 35,
-        height: window.innerHeight - 140
-      });
-
-      this.paper.on('element:pointerdown', () => {
-        this.selectedClasses.forEach(c => {
-          const checkbox = document.getElementById(`checkbox-${c.id}`) as HTMLInputElement;
-          if (checkbox) {
-            checkbox.checked = false;
-          }
-        });
-        this.selectedClasses = [];
-      });
-    }
-  }
-
-  @HostListener('window:resize', ['$event'])
-  onResize(event: Event): void {
-    this.paper.setDimensions(window.innerWidth - 35, window.innerHeight - 140);
-  }
-
   addClass() {
     this.selectedClasses = [];
 
     const x = Math.random() * (window.innerWidth - 135);
-    const y = Math.random() * (window.innerHeight - 240);
+    const y = Math.random() * (window.innerHeight - 255);
 
     const umlDesignAttrs: any = (col1: string, col2: string, gradient: boolean = false) => {
       if (gradient) {
@@ -301,7 +301,7 @@ export class UmlDiagramComponent implements OnInit {
     const svgBase64 = `data:image/svg+xml;base64,${btoa(unescape(encodeURIComponent(svgString)))}`;
 
     return new Promise<File>((resolve, reject) => {
-      const image = new Image(window.innerWidth - 35, window.innerHeight - 140);
+      const image = new Image(window.innerWidth - 35, window.innerHeight - 155);
       image.src = svgBase64;
 
       image.onload = () => {
@@ -327,7 +327,7 @@ export class UmlDiagramComponent implements OnInit {
     const svgBase64 = `data:image/svg+xml;base64,${btoa(unescape(encodeURIComponent(svgString)))}`;
 
     // Create a new image element and set its source to the base64 SVG
-    const image = new Image(window.innerWidth - 35, window.innerHeight - 140);
+    const image = new Image(window.innerWidth - 35, window.innerHeight - 155);
     image.src = svgBase64;
 
     image.onload = () => {
