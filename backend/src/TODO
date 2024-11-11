@@ -5,7 +5,7 @@
 3. Export custom RohanUML file and allow for import on FE
 
 ## Change of Scope
-Instead of just SQL DDL, let's convert to any language and allow the other way around too.
+Instead of just SQL DDL, let's convert to any language and allow the other way around too. ✅
 
 ## Flow
 
@@ -16,12 +16,17 @@ Upload image on FE -> Save to uploads/ -> Generate URL with path to uploadsContr
 Upload file on FE -> Save to uploads/ -> Generate URL with path to uploadsController -> Extract text from file and attach to the prompt -> Use for AI generation
 
 #### Another way: If No File
-Text textbox of data and attach to prompt -> Use for AI generation w/ no file
+Take textbox of data and attach to prompt -> Use for AI generation w/ no file
 
 ## FE Features
-Button to download RohanUML and upload RohanUML to auto-populate the paper
+Button to download RohanUML and upload RohanUML to auto-populate the paper ✅
 
 <!-- Nov 10 -->
 - FE: Boxes don't fit long text. Make it so that it has dynamic sizes to fit the text
 - BE: `UML Diagram -> Code` should be `JSON representation -> Code` and that should be for `Export as Code`
 - Still no associations implementation! Has to be reflected in the import helper func too.
+
+<!-- Nov 11 -->
+- There are different association types. Make sure the BE can differentiate between them and also add them as a choice on the FE modal
+  - There are six main types of relationships between classes: inheritance, realization / implementation, composition, aggregation, association, and dependency.
+  - https://blog.visual-paradigm.com/what-are-the-six-types-of-relationships-in-uml-class-diagrams/
