@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { environment } from '../../../environments/environment';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'connect-class-modal',
@@ -8,54 +9,31 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
   styleUrls: ['./connect-class-modal.component.scss']
 })
 export class ConnectClassModalComponent implements OnInit {
+  readonly associationTypes: string[] = ['Aggregation', 'Association', 'Composition', 'Dependency', 'Inheritance', 'Realization/Implementation'];
+  readonly cardinalities: string[] = ['0..1', '0..*', '1..1', '1..*', '*..*', '1..0', '*..0'];
   umlForm: FormGroup;
-  umlLevels = ['+', '-', '#', '~'];
-
+  exportOption: string = '';
+  selectedLanguage: string = '';
+  huggingFaceKey: string = '';
+  
   constructor(
     private fb: FormBuilder,
     public dialogRef: MatDialogRef<ConnectClassModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.umlForm = this.fb.group({
-      className: ['', Validators.required],
-      attributes: this.fb.array([]),
-      methods: this.fb.array([])
+      associationType: ['', Validators.required],
+      cardinality: ['', Validators.required],
+      reason: ''
     });
   }
-
+  
   ngOnInit(): void {}
 
-  get attributes(): FormArray {
-    return this.umlForm.get('attributes') as FormArray;
-  }
-
-  get methods(): FormArray {
-    return this.umlForm.get('methods') as FormArray;
-  }
-
-  addAttribute(): void {
-    const attributeGroup = this.fb.group({
-      level: ['', Validators.required],
-      name: ['', Validators.required]
-    });
-    this.attributes.push(attributeGroup);
-  }
-  
-  addMethod(): void {
-    const methodGroup = this.fb.group({
-      level: ['', Validators.required],
-      name: ['', Validators.required]
-    });
-    this.methods.push(methodGroup);
-  }
-
-  removeAttribute(index: number): void {
-    this.attributes.removeAt(index);
-  }
-  
-  removeMethod(index: number): void {
-    this.methods.removeAt(index);
-  }
+  onOptionChange(): void {
+    this.selectedLanguage = '';
+    this.huggingFaceKey = '';
+  };
 
   onCancel(): void {
     this.dialogRef.close();

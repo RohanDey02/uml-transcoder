@@ -42,21 +42,6 @@
   }
 }
 
-.note-box {
-  background-color: #fffbe6;
-  border: 1px solid #ffd700;
-  border-radius: 4px;
-  padding: 0.5rem 1rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  color: #333;
-  font-size: 1rem;
-  line-height: 1.5;
-
-  @media (max-width: 900px) {
-    display: none;
-  }
-}
-
 #paper {
   border: 2px solid #007bff;
   background-color: #f4f4f4;
@@ -69,4 +54,10 @@
   position: relative;
   transition: all 0.3s ease;
   margin: 1rem;
+}
+
+@media (max-width: 900px) {
+  .note-box {
+    display: none;
+  }
 }

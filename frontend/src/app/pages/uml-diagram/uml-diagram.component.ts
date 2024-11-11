@@ -37,14 +37,16 @@ export class UmlDiagramComponent implements OnInit {
         height: window.innerHeight - 155
       });
 
-      this.paper.on('element:pointerdown', () => {
-        this.selectedClasses.forEach(c => {
-          const checkbox = document.getElementById(`checkbox-${c.id}`) as HTMLInputElement;
-          if (checkbox) {
-            checkbox.checked = false;
-          }
-        });
-        this.selectedClasses = [];
+      this.paper.on('element:pointerdown', (elementView, evt) => {
+        if (!(evt.target instanceof HTMLInputElement && evt.target.type === 'checkbox')) {
+          this.selectedClasses.forEach(c => {
+            const checkbox = document.getElementById(`checkbox-${c.id}`) as HTMLInputElement;
+            if (checkbox) {
+              checkbox.checked = false;
+            }
+          });
+          this.selectedClasses = [];
+        }
       });
     }
   }
@@ -71,7 +73,11 @@ export class UmlDiagramComponent implements OnInit {
   }
 
   openConnectClassDialog() {
-    const dialogRef = this.dialog.open(ConnectClassModalComponent);
+    const dialogRef = this.dialog.open(ConnectClassModalComponent, {
+      data: {
+        selectedClasses: this.selectedClasses.map((c: any) => c.attributes.name[0])
+      }
+    });
 
     dialogRef.afterClosed().subscribe(result => {
       console.log(result);
@@ -217,14 +223,14 @@ export class UmlDiagramComponent implements OnInit {
         checkbox.type = 'checkbox';
         checkbox.style.width = '16px';
         checkbox.style.height = '16px';
-        
+
         // Add functionality to checkbox
         checkbox.addEventListener('change', () => {
           if (checkbox.checked && !this.selectedClasses.includes(umlClass)) {
             this.selectedClasses.push(umlClass);
-            
+
             if (this.selectedClasses.length === 2) {
-              this.openAddClassDialog();
+              this.openConnectClassDialog();
             }
           } else {
             const index = this.selectedClasses.indexOf(umlClass);

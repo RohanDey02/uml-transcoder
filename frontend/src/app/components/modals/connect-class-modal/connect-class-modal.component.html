@@ -1,57 +1,34 @@
 <div class="uml-class-modal">
-  <h2 mat-dialog-title>Enter UML Class Data</h2>
+  <h2 mat-dialog-title>Connect Classes</h2>
   <mat-dialog-content>
+    <div class="note-box" style="margin-bottom: 1rem;">
+      Creating association from class <strong>{{ data.selectedClasses[0] }}</strong> to class <strong>{{ data.selectedClasses[1] }}</strong>...
+    </div>
     <form [formGroup]="umlForm">
       <mat-form-field appearance="fill">
-        <mat-label>Class Name</mat-label>
-        <input
-          matInput
-          formControlName="className"
-          placeholder="Enter class name"
-        />
+        <mat-label>Association Type</mat-label>
+        <mat-select formControlName="associationType" placeholder="Select association type">
+          <mat-option *ngFor="let type of associationTypes" [value]="type">
+        {{ type }}
+          </mat-option>
+        </mat-select>
       </mat-form-field>
-      <mat-divider></mat-divider>
-      <div formArrayName="attributes">
-        <div *ngFor="let attribute of attributes.controls; let i = index" [formGroupName]="i">
-          <mat-form-field appearance="fill">
-            <mat-label>Level {{ i + 1 }}</mat-label>
-            <mat-select formControlName="level">
-              <mat-option *ngFor="let level of umlLevels" [value]="level">{{level}}</mat-option>
-            </mat-select>
-          </mat-form-field>
-          <mat-form-field appearance="fill">
-            <mat-label>Attribute {{ i + 1 }}</mat-label>
-            <input matInput formControlName="name" placeholder="Enter attribute" />
-          </mat-form-field>
-          <button mat-fab type="button" (click)="removeAttribute(i)">
-            <mat-icon>delete</mat-icon>
-          </button>
-        </div>
-        <button mat-button type="button" (click)="addAttribute()">Add Attribute</button>
-      </div>
-      <mat-divider></mat-divider>
-      <div formArrayName="methods">
-        <div *ngFor="let method of methods.controls; let i = index" [formGroupName]="i">
-          <mat-form-field appearance="fill">
-            <mat-label>Level {{ i + 1 }}</mat-label>
-            <mat-select formControlName="level">
-              <mat-option *ngFor="let level of umlLevels" [value]="level">{{level}}</mat-option>
-            </mat-select>
-          </mat-form-field>
-          <mat-form-field appearance="fill">
-            <mat-label>Method {{ i + 1 }}</mat-label>
-            <input matInput formControlName="name" placeholder="Enter method" />
-          </mat-form-field>
-          <button mat-fab type="button" (click)="removeMethod(i)">
-            <mat-icon>delete</mat-icon>
-          </button>
-        </div>
-        <button mat-button type="button" (click)="addMethod()">Add Method</button>
-      </div>
+      <mat-form-field appearance="fill">
+        <mat-label>Cardinality</mat-label>
+        <mat-select formControlName="cardinality" placeholder="Select cardinality">
+          <mat-option *ngFor="let cardinality of cardinalities" [value]="cardinality">
+            {{ cardinality }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Reason (Optional)</mat-label>
+        <input matInput formControlName="reason" placeholder="Enter reason" />
+      </mat-form-field>
     </form>
   </mat-dialog-content>
   <mat-dialog-actions>
     <button mat-button (click)="onCancel()">Cancel</button>
-    <button mat-button (click)="onSubmit()">Submit</button>
+    <button mat-button (click)="onSubmit()" [disabled]="!umlForm.valid">Submit</button>
   </mat-dialog-actions>
 </div>
