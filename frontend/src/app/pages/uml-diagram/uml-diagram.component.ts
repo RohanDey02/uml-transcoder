@@ -17,6 +17,7 @@ export class UmlDiagramComponent implements OnInit {
   private graph = new joint.dia.Graph({}, { cellNamespace: joint.shapes });
   private paper!: joint.dia.Paper;
   selectedClass: joint.dia.Element | null = null;
+  selectedClasses: joint.shapes.uml.Class[] = [];
 
   className: string = '';
   attributes: string[] = [];
@@ -114,10 +115,16 @@ export class UmlDiagramComponent implements OnInit {
         height: window.innerHeight - 140,
         async: true
       });
+
+      this.paper.on('element:pointerdown', () => {
+        this.handleCheckboxState();
+      });
     }
   }
 
   addClass() {
+    this.selectedClasses = [];
+
     const x = Math.random() * (window.innerWidth - 150);
     const y = Math.random() * (window.innerHeight - 240);
 
@@ -159,6 +166,54 @@ export class UmlDiagramComponent implements OnInit {
       }
     });
 
+    this.paper.on('render:done', () => {
+      const elementView = this.paper.findViewByModel(umlClass);
+      if (elementView) {
+        // Create foreignObject with a checkbox
+        const foreignObject = document.createElementNS('http://www.w3.org/2000/svg', 'foreignObject');
+        foreignObject.setAttribute('width', '20');
+        foreignObject.setAttribute('height', '20');
+        foreignObject.setAttribute('x', '5');
+        foreignObject.setAttribute('y', '5');
+
+        // Create a div to contain the checkbox
+        const div = document.createElement('div');
+        div.style.width = '20px';
+        div.style.height = '20px';
+
+        // Create and style the checkbox
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.style.width = '16px';
+        checkbox.style.height = '16px';
+
+        // Add functionality to checkbox
+        checkbox.addEventListener('change', () => {
+          if (checkbox.checked) {
+            if (!this.selectedClasses.includes(umlClass)) {
+              this.selectedClasses.push(umlClass);
+
+              if (this.selectedClasses.length === 2) {
+                this.openAddClassDialog();
+              }
+            }
+          } else {
+            const index = this.selectedClasses.indexOf(umlClass);
+            if (index > -1) {
+              this.selectedClasses.splice(index, 1);
+            }
+          }
+
+          this.handleCheckboxState();
+        });
+
+        // Append checkbox to div, div to foreignObject, and foreignObject to the elementView
+        div.appendChild(checkbox);
+        foreignObject.appendChild(div);
+        elementView.vel.append(foreignObject);
+      }
+    });
+
     this.graph.addCell(umlClass);
 
     // Clear input fields
@@ -166,6 +221,22 @@ export class UmlDiagramComponent implements OnInit {
     this.attributes = [];
     this.methods = [];
     this.lastAddedClass = umlClass;
+  }
+
+  handleCheckboxState() {
+    // Disable all checkboxes if there are 2 selected or total UML classes <= 1
+    const disableCheckboxes = this.selectedClasses.length === 2 || this.graph.getCells().length <= 1;
+
+    // Get all checkbox elements
+    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+
+    checkboxes.forEach((checkbox) => {
+      const inputElement = checkbox as HTMLInputElement; // Cast to HTMLInputElement
+
+      // If checkbox is already checked (part of the selected classes), leave it enabled
+      const isChecked = inputElement.checked;
+      inputElement.disabled = disableCheckboxes && !isChecked;
+    });
   }
 
   connectClasses() {
