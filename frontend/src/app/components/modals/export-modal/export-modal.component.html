@@ -27,7 +27,7 @@
     </div>
   </mat-dialog-content>
   <mat-dialog-actions>
-    <button mat-button (click)="onCancel()" [disabled]="exportOption === '' || (exportOption === 'exp-code' && selectedLanguage === '')">Cancel</button>
+    <button mat-button (click)="onCancel()">Cancel</button>
     <button mat-button (click)="onSubmit()" [disabled]="exportOption === '' || (exportOption === 'exp-code' && selectedLanguage === '')">Submit</button>
   </mat-dialog-actions>
 </div>

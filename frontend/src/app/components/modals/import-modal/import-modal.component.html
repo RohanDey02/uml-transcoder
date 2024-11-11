@@ -47,7 +47,7 @@
     </div>
   </mat-dialog-content>
   <mat-dialog-actions>
-    <button mat-button (click)="onCancel()" [disabled]="importOption === '' || (importOption === 'imp-code' && selectedLanguage === '')">Cancel</button>
+    <button mat-button (click)="onCancel()">Cancel</button>
     <button mat-button (click)="onSubmit()" [disabled]="importOption === '' || (importOption === 'imp-code' && selectedLanguage === '')">Submit</button>
   </mat-dialog-actions>
 </div>
