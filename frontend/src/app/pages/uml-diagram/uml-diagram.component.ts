@@ -77,6 +77,9 @@ export class UmlDiagramComponent implements OnInit {
       const { exportOption, selectedLanguage, huggingFaceKey } = result;
 
       if (exportOption === 'exp-code') {
+        // Hide checkboxes before exporting
+        this.handleCheckboxState(true);
+
         this.formatAsFile().then(file => {
           this.api.uploadFile(file).subscribe({
             next: (response: any) => {
@@ -97,9 +100,16 @@ export class UmlDiagramComponent implements OnInit {
           console.error(err);
         });
 
-        // this.api.generateUMLToCode()
+        // Show checkboxes after exporting
+        this.handleCheckboxState(false);
       } else if (exportOption == 'exp-image') {
+        // Hide checkboxes before exporting
+        this.handleCheckboxState(true);
+
         this.exportToImage();
+
+        // Show checkboxes after exporting
+        this.handleCheckboxState(false);
       } else {
         this.exportToRohanUML();
       }
@@ -117,6 +127,7 @@ export class UmlDiagramComponent implements OnInit {
       });
 
       this.paper.on('element:pointerdown', () => {
+        this.selectedClasses = [];
         this.handleCheckboxState();
       });
     }
@@ -228,20 +239,27 @@ export class UmlDiagramComponent implements OnInit {
     this.lastAddedClass = umlClass;
   }
 
-  handleCheckboxState() {
-    // Disable all checkboxes if there are 2 selected or total UML classes <= 1
-    const disableCheckboxes = this.selectedClasses.length === 2 || this.graph.getCells().length <= 1;
-
-    // Get all checkbox elements
+  handleCheckboxState(hide: boolean = false) {
     const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-
-    checkboxes.forEach((checkbox) => {
-      const inputElement = checkbox as HTMLInputElement; // Cast to HTMLInputElement
-
-      // If checkbox is already checked (part of the selected classes), leave it enabled
-      const isChecked = inputElement.checked;
-      inputElement.disabled = disableCheckboxes && !isChecked;
-    });
+    if (hide) {
+      checkboxes.forEach((checkbox) => {
+        const inputElement = checkbox as HTMLInputElement; // Cast to HTMLInputElement
+        inputElement.style.display = 'none';
+      });
+    } else {
+      // Disable all checkboxes if there are 2 selected or total UML classes <= 1
+      const disableCheckboxes = this.selectedClasses.length === 2 || this.graph.getCells().length <= 1;
+  
+      // Get all checkbox elements
+      checkboxes.forEach((checkbox) => {
+        const inputElement = checkbox as HTMLInputElement; // Cast to HTMLInputElement
+        inputElement.style.display = 'block';
+  
+        // If checkbox is already checked (part of the selected classes), leave it enabled
+        const isChecked = inputElement.checked;
+        inputElement.disabled = disableCheckboxes && !isChecked;
+      });
+    }
   }
 
   connectClasses() {
