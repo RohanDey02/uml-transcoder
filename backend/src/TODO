@@ -22,7 +22,7 @@ Take textbox of data and attach to prompt -> Use for AI generation w/ no file
 Button to download RohanUML and upload RohanUML to auto-populate the paper ✅
 
 <!-- Nov 10 -->
-- FE: Boxes don't fit long text. Make it so that it has dynamic sizes to fit the text
+- FE: Boxes don't fit long text. Make it so that it has dynamic sizes to fit the text ✅
 - BE: `UML Diagram -> Code` should be `JSON representation -> Code` and that should be for `Export as Code`
 - Still no associations implementation! Has to be reflected in the import helper func too.
 

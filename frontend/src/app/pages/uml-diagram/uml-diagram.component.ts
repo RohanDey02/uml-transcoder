@@ -182,7 +182,7 @@ export class UmlDiagramComponent implements OnInit {
 
     const umlClass = new joint.shapes.uml.Class({
       position: { x, y },
-      size: { width: 200, height: 150 },
+      size: { width: Math.max(200, this.className.length * 10, ...this.attributes.map(attr => attr.length * 7), ...this.methods.map(method => method.length * 7)), height: Math.max(150, (this.attributes.length + this.methods.length) * 20) },
       name: [this.className],
       attributes: this.attributes,
       methods: this.methods,
