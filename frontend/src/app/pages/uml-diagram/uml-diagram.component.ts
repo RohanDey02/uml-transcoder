@@ -83,6 +83,13 @@ export class UmlDiagramComponent implements OnInit {
       const source = this.selectedClasses[0];
       const target = this.selectedClasses[1];
 
+      let existingLinks: joint.dia.Link | undefined = this.graph.getLinks().find((l: any) => l.attributes.source.id === source.id && l.attributes.target.id === target.id);
+      if (existingLinks) {
+        // Remove the link if it already exists
+        existingLinks.remove();
+      }
+
+      // Get the source and target classes
       link.source(source);
       link.target(target);
       this.graph.addCell(link);
@@ -391,10 +398,19 @@ export class UmlDiagramComponent implements OnInit {
         for (const association of cell.associations) {
           // Create a link between the two classes
           let link: joint.shapes.standard.Link = ConnectClassModalComponent.connectClasses({ ...association, associationType: association.type });
+          let source: joint.dia.Cell = this.graph.getCells().find((c: any) => c.attributes.name[0] === cell.name)!;
+          let target: joint.dia.Cell = this.graph.getCells().find((c: any) => c.attributes.name[0] === association.to)!;
+
+
+          let existingLinks: joint.dia.Link | undefined = this.graph.getLinks().find((l: any) => l.attributes.source.id === source.id && l.attributes.target.id === target.id);
+          if (existingLinks) {
+            // Remove the link if it already exists
+            existingLinks.remove();
+          }
 
           // Get the source and target classes
-          link.source(this.graph.getCells().find((c: any) => c.attributes.name[0] === cell.name)!);
-          link.target(this.graph.getCells().find((c: any) => c.attributes.name[0] === association.to)!);
+          link.source(source);
+          link.target(target);
           this.graph.addCell(link);
         }
       }
