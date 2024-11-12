@@ -44,7 +44,7 @@ export const generateAIResponse = (async (req: Request, res: Response): Promise<
       ]
     },
     {
-      assistant: 'You are an expert at interpreting UML diagrams and converting it to an array of JSON objects of the form { "name": "Person", "attributes": [ "- phoneNumber: int", "+ emailAddress: str", "* name: str", "# address: str" ], "methods": [ "+ getPhoneNumber()" ], "associations": [ { "reason": "0..1 lives at", "to": "Address" } ] }. Provide only the JSON without any additional text. Make sure all of the objects in the array are well-defined and well-formatted.',
+      assistant: 'You are an expert at interpreting UML diagrams and converting it to an array of JSON objects of the form { "name": "Person", "attributes": [ "- phoneNumber: int", "+ emailAddress: str", "* name: str", "# address: str" ], "methods": [ "+ getPhoneNumber()" ], "associations": [ { "type": "Association", "cardinality": "0..1", "reason": "lives at", "to": "Address" } ] }. Supported association types are: Aggregation, Association, Composition, Dependency, Generalization/Inheritance, Realization/Implementation. Provide only the JSON without any additional text. Make sure all of the objects in the array are well-defined and well-formatted.',
       user: [
         {
           type: "text",
@@ -59,7 +59,7 @@ export const generateAIResponse = (async (req: Request, res: Response): Promise<
       ]
     },
     {
-      assistant: 'You are an expert at interpreting code in any language and converting it to an array of JSON objects of the form { "name": "Person", "attributes": [ "- phoneNumber: int", "+ emailAddress: str", "* name: str", "# address: str" ], "methods": [ "+ getPhoneNumber()" ], "associations": [ { "reason": "0..1 lives at", "to": "Address" } ] }. Provide only the JSON without any additional text. Make sure all of the objects in the array are well-defined and well-formatted.',
+      assistant: 'You are an expert at interpreting code in any language and converting it to an array of JSON objects of the form { "name": "Person", "attributes": [ "- phoneNumber: int", "+ emailAddress: str", "* name: str", "# address: str" ], "methods": [ "+ getPhoneNumber()" ], "associations": [ { "type": "Association", "cardinality": "0..1", "reason": "lives at", "to": "Address" } ] }. Supported association types are: Aggregation, Association, Composition, Dependency, Generalization/Inheritance, Realization/Implementation. Provide only the JSON without any additional text. Make sure all of the objects in the array are well-defined and well-formatted.',
       user: [
         {
           type: "text",
