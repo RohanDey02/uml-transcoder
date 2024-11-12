@@ -9,7 +9,7 @@ import * as joint from 'jointjs';
   styleUrls: ['./connect-class-modal.component.scss']
 })
 export class ConnectClassModalComponent implements OnInit {
-  readonly associationTypes: string[] = ['Aggregation', 'Association', 'Composition', 'Dependency', 'Generalization', 'Inheritance', 'Realization/Implementation'];
+  readonly associationTypes: string[] = ['Aggregation', 'Association', 'Composition', 'Dependency', 'Generalization/Inheritance', 'Realization/Implementation'];
   readonly cardinalities: string[] = ['0..1', '0..*', '1..1', '1..*', '*..*', '1..0', '*..0'];
   umlForm: FormGroup;
 
@@ -46,12 +46,16 @@ export class ConnectClassModalComponent implements OnInit {
           attrs: {
             line: {
               stroke: '#000000',
+              sourceMarker: {
+                type: 'path',
+                d: 'M 30 0 L 15 -10 L 0 0 L 15 10 z',
+                fill: '#FFFFFF',
+                stroke: '#000000',
+                strokeWidth: 2
+              },
               targetMarker: {
-                'type': 'path',
-                'd': 'M 0 0 20 10 0 0 20 -10',
-                'fill': '#000000',
-                'stroke': '#000000',
-                'stroke-width': 2
+                type: 'path',
+                d: ''
               }
             }
           }
@@ -60,7 +64,20 @@ export class ConnectClassModalComponent implements OnInit {
       case 'Composition':
         link = new joint.shapes.standard.Link({
           attrs: {
-            '.marker-target': { d: 'M 10 0 L 0 5 L 10 10 z', fill: '#000000', stroke: '#000000' }
+            line: {
+              stroke: '#000000',
+              sourceMarker: {
+                type: 'path',
+                d: 'M 30 0 L 15 -10 L 0 0 L 15 10 z',
+                fill: '#000000',
+                stroke: '#000000',
+                strokeWidth: 2
+              },
+              targetMarker: {
+                type: 'path',
+                d: ''
+              }
+            }
           }
         });
         break;
@@ -81,14 +98,7 @@ export class ConnectClassModalComponent implements OnInit {
           }
         });
         break;
-      case 'Generalization':
-        link = new joint.shapes.standard.Link({
-          attrs: {
-            '.marker-target': { d: 'M 10 0 L 0 5 L 10 10 z', fill: '#FFFFFF', stroke: '#000000' }
-          }
-        });
-        break;
-      case 'Inheritance':
+      case 'Generalization/Inheritance':
         link = new joint.shapes.standard.Link({
           attrs: {
             line: {
