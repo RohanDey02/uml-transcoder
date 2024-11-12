@@ -377,12 +377,27 @@ export class UmlDiagramComponent implements OnInit {
     this.insertGraphData(graphData);
   }
 
-  insertGraphData(graphData: { name: string; attributes: string[]; methods: string[] }[]) {
+  insertGraphData(graphData: { name: string; attributes: string[]; methods: string[], associations: { type: string, cardinality: string, reason: string, to: string }[] }[]) {
     for (const cell of Array.from(graphData)) {
       this.className = cell.name;
       this.attributes = cell.attributes;
       this.methods = cell.methods;
       this.addClass();
     };
+
+    // Add associations (do it after because we need all the objects to exist first)
+    for (const cell of Array.from(graphData)) {
+      if (cell.associations && cell.associations.length > 0) {
+        for (const association of cell.associations) {
+          // Create a link between the two classes
+          let link: joint.shapes.standard.Link = ConnectClassModalComponent.connectClasses({ ...association, associationType: association.type });
+
+          // Get the source and target classes
+          link.source(this.graph.getCells().find((c: any) => c.attributes.name[0] === cell.name)!);
+          link.target(this.graph.getCells().find((c: any) => c.attributes.name[0] === association.to)!);
+          this.graph.addCell(link);
+        }
+      }
+    }
   }
 }
