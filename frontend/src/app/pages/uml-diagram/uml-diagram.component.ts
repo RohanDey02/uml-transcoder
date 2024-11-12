@@ -17,13 +17,11 @@ import * as fflate from 'fflate';
 export class UmlDiagramComponent implements OnInit {
   private graph = new joint.dia.Graph({}, { cellNamespace: joint.shapes });
   private paper!: joint.dia.Paper;
-  selectedClass: joint.dia.Element | null = null;
   selectedClasses: joint.shapes.uml.Class[] = [];
 
   className: string = '';
   attributes: string[] = [];
   methods: string[] = [];
-  lastAddedClass: joint.shapes.uml.Class | null = null;
 
   constructor(@Inject(PLATFORM_ID) private platformId: Object, private dialog: MatDialog, private api: ApiService) { }
 
@@ -80,7 +78,14 @@ export class UmlDiagramComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
+      const { link } = result;
+
+      const source = this.selectedClasses[0];
+      const target = this.selectedClasses[1];
+
+      link.source(source);
+      link.target(target);
+      this.graph.addCell(link);
     });
   }
 
@@ -253,7 +258,6 @@ export class UmlDiagramComponent implements OnInit {
     this.className = '';
     this.attributes = [];
     this.methods = [];
-    this.lastAddedClass = umlClass;
   }
 
   handleCheckboxState(hide: boolean = false) {
@@ -276,25 +280,6 @@ export class UmlDiagramComponent implements OnInit {
         const isChecked = inputElement.checked;
         inputElement.disabled = disableCheckboxes && !isChecked;
       });
-    }
-  }
-
-  connectClasses() {
-    if (!this.selectedClass || !this.lastAddedClass) {
-      alert('Please select a class and add another class to connect.');
-      return;
-    }
-
-    const source = this.selectedClass;
-    const target = this.graph.getCells().find(c => c !== source);
-
-    if (target) {
-      const link = new joint.shapes.standard.Link();
-      link.source(source);
-      link.target(target);
-      this.graph.addCell(link);
-    } else {
-      alert('No other classes to connect to.');
     }
   }
 
