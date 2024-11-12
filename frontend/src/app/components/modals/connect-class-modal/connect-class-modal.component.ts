@@ -12,9 +12,6 @@ export class ConnectClassModalComponent implements OnInit {
   readonly associationTypes: string[] = ['Aggregation', 'Association', 'Composition', 'Dependency', 'Inheritance', 'Realization/Implementation'];
   readonly cardinalities: string[] = ['0..1', '0..*', '1..1', '1..*', '*..*', '1..0', '*..0'];
   umlForm: FormGroup;
-  exportOption: string = '';
-  selectedLanguage: string = '';
-  huggingFaceKey: string = '';
   
   constructor(
     private fb: FormBuilder,
@@ -29,11 +26,6 @@ export class ConnectClassModalComponent implements OnInit {
   }
   
   ngOnInit(): void {}
-
-  onOptionChange(): void {
-    this.selectedLanguage = '';
-    this.huggingFaceKey = '';
-  };
 
   onCancel(): void {
     this.dialogRef.close();
