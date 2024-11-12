@@ -33,14 +33,14 @@ export class ConnectClassModalComponent implements OnInit {
 
   onSubmit(): void {
     if (this.umlForm.valid) {
-      let link: joint.shapes.standard.Link = this.connectClasses();
+      let link: joint.shapes.standard.Link = ConnectClassModalComponent.connectClasses(this.umlForm.value);
 
       this.dialogRef.close({ link });
     }
   }
-  connectClasses(): joint.shapes.standard.Link {
+  static connectClasses(values: { associationType: string, cardinality: string, reason?: string }): joint.shapes.standard.Link {
     let link: joint.shapes.standard.Link;
-    switch (this.umlForm.value.associationType) {
+    switch (values.associationType) {
       case 'Aggregation':
         link = new joint.shapes.standard.Link({
           attrs: {
