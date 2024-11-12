@@ -20,6 +20,8 @@ export const generateAIResponse = (async (req: Request, res: Response): Promise<
   }
 
   const model: string = 'meta-llama/Llama-3.2-11B-Vision-Instruct';
+  const supportedAssociationTypes: string = 'Aggregation, Association, Composition, Dependency, Generalization/Inheritance, Realization/Implementation';
+  const supportedCardinalities: string = '"0..1", "0..*", "1..1", "1..*", "*..*", "1..0", "*..0"';
 
   /*
    * Supported Cases:
@@ -44,7 +46,7 @@ export const generateAIResponse = (async (req: Request, res: Response): Promise<
       ]
     },
     {
-      assistant: 'You are an expert at interpreting UML diagrams and converting it to an array of JSON objects of the form { "name": "Person", "attributes": [ "- phoneNumber: int", "+ emailAddress: str", "* name: str", "# address: str" ], "methods": [ "+ getPhoneNumber()" ], "associations": [ { "type": "Association", "cardinality": "0..1", "reason": "lives at", "to": "Address" } ] }. Supported association types are: Aggregation, Association, Composition, Dependency, Generalization/Inheritance, Realization/Implementation. Provide only the JSON without any additional text. Make sure all of the objects in the array are well-defined and well-formatted.',
+      assistant: `You are an expert at interpreting UML diagrams and converting it to an array of JSON objects of the form { "name": "Person", "attributes": [ "- phoneNumber: int", "+ emailAddress: str", "* name: str", "# address: str" ], "methods": [ "+ getPhoneNumber()" ], "associations": [ { "type": "Association", "cardinality": "0..1", "reason": "lives at", "to": "Address" } ] }. Supported association types are: ${supportedAssociationTypes}. Supported cardinalities are: ${supportedCardinalities}. Provide only the JSON without any additional text. Make sure all of the objects in the array are well-defined and well-formatted (i.e. closed parentheses and comma-separated).`,
       user: [
         {
           type: "text",
@@ -59,7 +61,7 @@ export const generateAIResponse = (async (req: Request, res: Response): Promise<
       ]
     },
     {
-      assistant: 'You are an expert at interpreting code in any language and converting it to an array of JSON objects of the form { "name": "Person", "attributes": [ "- phoneNumber: int", "+ emailAddress: str", "* name: str", "# address: str" ], "methods": [ "+ getPhoneNumber()" ], "associations": [ { "type": "Association", "cardinality": "0..1", "reason": "lives at", "to": "Address" } ] }. Supported association types are: Aggregation, Association, Composition, Dependency, Generalization/Inheritance, Realization/Implementation. Provide only the JSON without any additional text. Make sure all of the objects in the array are well-defined and well-formatted.',
+      assistant: `You are an expert at interpreting code in any language and converting it to an array of JSON objects of the form { "name": "Person", "attributes": [ "- phoneNumber: int", "+ emailAddress: str", "* name: str", "# address: str" ], "methods": [ "+ getPhoneNumber()" ], "associations": [ { "type": "Association", "cardinality": "0..1", "reason": "lives at", "to": "Address" } ] }. Supported association types are: ${supportedAssociationTypes}. Supported cardinalities are: ${supportedCardinalities}. Provide only the JSON without any additional text. Make sure all of the objects in the array are well-defined and well-formatted (i.e. closed parentheses and comma-separated).`,
       user: [
         {
           type: "text",
