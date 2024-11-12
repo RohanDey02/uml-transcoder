@@ -30,3 +30,7 @@ Button to download RohanUML and upload RohanUML to auto-populate the paper ✅
 - There are different association types. Make sure the BE can differentiate between them and also add them as a choice on the FE modal
   - There are six main types of relationships between classes: inheritance, realization / implementation, composition, aggregation, association, and dependency.
   - https://blog.visual-paradigm.com/what-are-the-six-types-of-relationships-in-uml-class-diagrams/
+
+<!-- Nov 12 -->
+Need to allow more than 2 to be chosen on the checkbox. Not necessarily the case that the relation is only between 2 classes.
+- If association, then just interconnect them. If composition, the first one is the one that the others point to. (Maybe...)
