@@ -2,6 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import * as joint from 'jointjs';
+import * as links from './../../constants/Link';
 
 @Component({
   selector: 'connect-class-modal',
@@ -40,111 +41,104 @@ export class ConnectClassModalComponent implements OnInit {
   }
   static connectClasses(values: { associationType: string, cardinality: string, reason?: string }): joint.shapes.standard.Link {
     let link: joint.shapes.standard.Link;
+    const disableJunk = {
+      '.marker-arrowheads': {
+        display: 'none'
+      },
+      '.link-tools': {
+        display: 'none'
+      }
+    }
+
     switch (values.associationType) {
       case 'Aggregation':
-        link = new joint.shapes.standard.Link({
+        link = new joint.shapes.uml.Aggregation({
           attrs: {
-            line: {
+            '.marker-source': {
+              d: 'M 30 0 L 15 -10 L 0 0 L 15 10 z',
+              fill: '#FFFFFF',
               stroke: '#000000',
-              sourceMarker: {
-                type: 'path',
-                d: 'M 30 0 L 15 -10 L 0 0 L 15 10 z',
-                fill: '#FFFFFF',
-                stroke: '#000000',
-                strokeWidth: 2
-              },
-              targetMarker: {
-                type: 'path',
-                d: ''
-              }
-            }
+              strokeWidth: 2
+            },
+            '.marker-target': {
+              d: ''
+            },
+            ...disableJunk
           }
         });
         break;
       case 'Composition':
-        link = new joint.shapes.standard.Link({
+        link = new joint.shapes.uml.Composition({
           attrs: {
-            line: {
+            '.marker-source': {
+              d: links.Aggregation.svgPath,
+              fill: links.Aggregation.fill,
               stroke: '#000000',
-              sourceMarker: {
-                type: 'path',
-                d: 'M 30 0 L 15 -10 L 0 0 L 15 10 z',
-                fill: '#000000',
-                stroke: '#000000',
-                strokeWidth: 2
-              },
-              targetMarker: {
-                type: 'path',
-                d: ''
-              }
-            }
+              strokeWidth: 2
+            },
+            '.marker-target': {
+              d: ''
+            },
+            ...disableJunk
           }
         });
         break;
       case 'Dependency':
-        link = new joint.shapes.standard.Link({
+        link = new joint.shapes.uml.Association({
           attrs: {
-            line: {
+            '.connection': {
+              'stroke-dasharray': '5,5'
+            },
+            '.marker-target': {
+              d: links.Dependency.svgPath,
+              fill: links.Dependency.fill,
               stroke: '#000000',
-              'stroke-dasharray': '5,5',
-              targetMarker: {
-                'type': 'path',
-                'd': 'M 0 0 20 10 0 0 20 -10',
-                'fill': '#000000',
-                'stroke': '#000000',
-                'stroke-width': 2
-              }
-            }
+              'stroke-width': 2
+            },
+            ...disableJunk
           }
         });
         break;
       case 'Generalization/Inheritance':
-        link = new joint.shapes.standard.Link({
+        link = new joint.shapes.uml.Generalization({
           attrs: {
-            line: {
+            '.marker-target': {
+              d: links.GeneralizationInheritance.svgPath,
+              fill: links.GeneralizationInheritance.fill,
               stroke: '#000000',
-              targetMarker: {
-                'type': 'path',
-                'd': 'M 20 -10 0 0 20 10 z',
-                'fill': '#FFFFFF',
-                'stroke': '#000000',
-                'stroke-width': 2
-              }
-            }
+              'stroke-width': 2
+            },
+            ...disableJunk
           }
         });
         break;
       case 'Realization/Implementation':
-        link = new joint.shapes.standard.Link({
+        link = new joint.shapes.uml.Implementation({
           attrs: {
-            line: {
+            '.connection': {
+              'stroke-dasharray': '5,5'
+            },
+            '.marker-target': {
+              d: links.RealizationImplementation.svgPath,
+              fill: links.RealizationImplementation.fill,
               stroke: '#000000',
-              'stroke-dasharray': '5,5',
-              targetMarker: {
-                'type': 'path',
-                'd': 'M 20 -10 0 0 20 10 z',
-                'fill': '#FFFFFF',
-                'stroke': '#000000',
-                'stroke-width': 2
-              }
-            }
+              'stroke-width': 2
+            },
+            ...disableJunk
           }
         });
         break;
       default:
         // Association
-        link = new joint.shapes.standard.Link({
+        link = new joint.shapes.uml.Association({
           attrs: {
-            line: {
+            '.marker-target': {
+              d: links.Association.svgPath,
+              fill: links.Association.fill,
               stroke: '#000000',
-              targetMarker: {
-                'type': 'path',
-                'd': 'M 0 0 20 10 0 0 20 -10',
-                'fill': '#000000',
-                'stroke': '#000000',
-                'stroke-width': 2
-              }
-            }
+              'stroke-width': 2
+            },
+            ...disableJunk
           }
         });
         break;
