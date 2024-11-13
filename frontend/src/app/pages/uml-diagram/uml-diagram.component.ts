@@ -4,6 +4,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { AddClassModalComponent } from '../../components/modals/add-class-modal/add-class-modal.component';
 import { ConnectClassModalComponent } from '../../components/modals/connect-class-modal/connect-class-modal.component';
+import { EditDiagramModalComponent } from '../../components/modals/edit-diagram-modal/edit-diagram-modal.component';
 import { ExportClassModalComponent } from '../../components/modals/export-modal/export-modal.component';
 import { ImportClassModalComponent } from '../../components/modals/import-modal/import-modal.component';
 import { ApiService } from '../../services/api.service';
@@ -93,6 +94,20 @@ export class UmlDiagramComponent implements OnInit {
       link.source(source);
       link.target(target);
       this.graph.addCell(link);
+    });
+  }
+
+  openEditDiagramDialog() {
+    console.log(this.graph.getCells());
+
+    const dialogRef = this.dialog.open(EditDiagramModalComponent, {
+      data: {
+        graph: this.graph
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(result);
     });
   }
 
