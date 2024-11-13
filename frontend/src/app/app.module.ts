@@ -19,6 +19,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ImportClassModalComponent } from './components/modals/import-modal/import-modal.component';
 import { ExportClassModalComponent } from './components/modals/export-modal/export-modal.component';
 import { ConnectClassModalComponent } from './components/modals/connect-class-modal/connect-class-modal.component';
+import { EditDiagramModalComponent } from './components/modals/edit-diagram-modal/edit-diagram-modal.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { ConnectClassModalComponent } from './components/modals/connect-class-mo
     AddClassModalComponent,
     ConnectClassModalComponent,
     ImportClassModalComponent,
+    EditDiagramModalComponent,
     ExportClassModalComponent
   ],
   imports: [
